@@ -2,7 +2,7 @@
 Inplementation of some basic sort algorithms and some simple tests.
 
 ## Requirement
-Only for visual studio 2022 community currently (msvc v143).  
+Only for visual studio 2022 currently (msvc v143).  
 Based on C++ 20 standard.
 
 ## Implemented Algorithm
