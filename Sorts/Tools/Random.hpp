@@ -71,11 +71,11 @@ template<class _ValTy>
 std::default_random_engine Rand_Normal<_ValTy>::m_engine{ _rd() };
 
 template<class _ValTy>
-class DistributeVisualizer
+class DistributionVisualizer
 {
 public:
-    explicit DistributeVisualizer() = default;
-    DistributeVisualizer& operator=(const DistributeVisualizer&) = delete;
+    explicit DistributionVisualizer() = default;
+    DistributionVisualizer& operator=(const DistributionVisualizer&) = delete;
 public:
     void operator()(
         const std::vector<_ValTy>& randVec,
@@ -106,7 +106,7 @@ public:
         size_t maxS = *std::ranges::max_element(bins);
         double resizer = double(maxS) / maxStarNum;
         for (auto& val : bins) {
-            val = (_ValTy)ceil(val / resizer);
+            val = (size_t)ceil(val / resizer);
         }
         for (size_t i = 0; i < bins.size(); ++i) {
             std::cout << i << ": ";

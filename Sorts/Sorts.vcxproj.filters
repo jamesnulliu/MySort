@@ -39,15 +39,21 @@
     <ClInclude Include="Sort\InsertionSort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TestPatterns.hpp">
+    <ClInclude Include="Tests\Params.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\BaseTestPattern.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\TestPatterns.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestPatterns.cpp">
+    <ClCompile Include="Tests\BaseTestPatterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

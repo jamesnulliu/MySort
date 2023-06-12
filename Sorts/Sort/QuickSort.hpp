@@ -41,11 +41,11 @@ namespace mysort {
 
     // Tail-Recursive Optimization of {quickSort_Lomuto()}
     template<class _RandIt, class _Pr = std::less<void>>
-    void QuickSort_TailRecOpt_Lomuto(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    void QuickSort_Lomuto_TailRecOpt(_RandIt seq, indext first, indext last, const _Pr& comp = {})
     {
         while (first < last) {
             indext p = _partition_Lomuto(seq, first, last, comp);
-            QuickSort_TailRecOpt_Lomuto(seq, first, p - 1, comp);
+            QuickSort_Lomuto_TailRecOpt(seq, first, p - 1, comp);
             first = p + 1;
         }
     }
@@ -60,7 +60,7 @@ namespace mysort {
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, first, last);
+        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
         // Choose the median of the 3 randomly chosen elems:
         indext mid = // index of the median
             (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
@@ -71,15 +71,15 @@ namespace mysort {
     }
 
     template<class _RandIt, class _Pr = std::less<void>>
-    void QuickSort_Lomuto_rand(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    void QuickSort_Lomuto_Rand(_RandIt seq, indext first, indext last, const _Pr& comp = {})
     {
         if (first >= last) return;
         // If the pivot is choosen randomly, the algorithm does not rely on the input seq
         // As a result, the time complexity remains O(nlgn) when the seq is sorted
         // But if all the elements are the same, the complexitiy is still O(n^2)
         indext p = _partition_Lomuto_rand(seq, first, last, comp);
-        QuickSort_Lomuto_rand(seq, first, p - 1, comp);
-        QuickSort_Lomuto_rand(seq, p + 1, last, comp);
+        QuickSort_Lomuto_Rand(seq, first, p - 1, comp);
+        QuickSort_Lomuto_Rand(seq, p + 1, last, comp);
     }
 
     // Partition the array {seq[first : last]} into 3 subarrays:
@@ -93,7 +93,7 @@ namespace mysort {
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, first, last);
+        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
         // Choose the median of the 3 randomly chosen elems:
         indext mid = // index of the median
             (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
@@ -126,18 +126,18 @@ namespace mysort {
     }
 
     template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_rand_duplicated(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
+    void QuickSort_Lomuto_Rand_Duplicated(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
     {
         if (first >= last) return;
         // See comments of function {Paritition_rand_duplicated_Lomuto()}
         indext* p = _partition_Lomuto_rand_duplicated(seq, first, last, comp, equal);
-        QuickSort_Lomuto_rand_duplicated(seq, first, p[0] - 1, comp, equal);
-        QuickSort_Lomuto_rand_duplicated(seq, p[1] + 1, last, comp, equal);
+        QuickSort_Lomuto_Rand_Duplicated(seq, first, p[0] - 1, comp, equal);
+        QuickSort_Lomuto_Rand_Duplicated(seq, p[1] + 1, last, comp, equal);
         delete p;
     }
 
     template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_rand_duplicated_insertion(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {}, sizet cut = 10LL)
+    void QuickSort_Lomuto_Rand_Duplicated_Insertion(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {}, sizet cut = 10LL)
     {
         if (first >= last) return;
         // Use insertion sort if the length is shorter than {cut}
@@ -146,8 +146,8 @@ namespace mysort {
             return;
         }
         indext* p = _partition_Lomuto_rand_duplicated(seq, first, last, comp, equal);
-        QuickSort_Lomuto_rand_duplicated_insertion(seq, first, p[0] - 1, comp, equal, cut);
-        QuickSort_Lomuto_rand_duplicated_insertion(seq, p[1] + 1, last, comp, equal, cut);
+        QuickSort_Lomuto_Rand_Duplicated_Insertion(seq, first, p[0] - 1, comp, equal, cut);
+        QuickSort_Lomuto_Rand_Duplicated_Insertion(seq, p[1] + 1, last, comp, equal, cut);
     }
 
     // Partition the array to 2 subarrays, any element in {seq[first : j]} is smaller (or larger)
@@ -194,7 +194,7 @@ namespace mysort {
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, first, last);
+        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
         // Choose the median of the 3 randomly chosen elems:
         indext mid = // index of the median
             (comp1(*(seq + vec[0]), *(seq + vec[1])) && comp1(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
@@ -218,22 +218,22 @@ namespace mysort {
     }
 
     template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_rand(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
+    void QuickSort_Hoare_Rand(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
         if (first >= last) return;
         indext p = _partition_Hoare_rand(seq, first, last, comp1, comp2);
-        QuickSort_Hoare_rand(seq, first, p, comp1, comp2);
-        QuickSort_Hoare_rand(seq, p + 1, last, comp1, comp2);
+        QuickSort_Hoare_Rand(seq, first, p, comp1, comp2);
+        QuickSort_Hoare_Rand(seq, p + 1, last, comp1, comp2);
     }
 
     template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_rand_insertion(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}, sizet cut = 10LL) {
+    void QuickSort_Hoare_Rand_Insertion(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}, sizet cut = 10LL) {
         if (first >= last) return;
         if (last - first + 1LL == cut) {
             InsertionSort(seq, first, last, comp1);
             return;
         }
         indext p = _partition_Hoare_rand(seq, first, last, comp1, comp2);
-        QuickSort_Hoare_rand_insertion(seq, first, p, comp1, comp2);
-        QuickSort_Hoare_rand_insertion(seq, p + 1, last, comp1, comp2);
+        QuickSort_Hoare_Rand_Insertion(seq, first, p, comp1, comp2);
+        QuickSort_Hoare_Rand_Insertion(seq, p + 1, last, comp1, comp2);
     }
 }

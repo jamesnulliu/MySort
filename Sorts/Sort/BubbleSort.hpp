@@ -18,7 +18,7 @@ namespace mysort {
     }
 
     template<class _RandIt, class _Pr = std::less<void>>
-    void BubbleSort_stop(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    void BubbleSort_Stop(_RandIt seq, indext first, indext last, const _Pr& comp = {})
     {
         sizet size = last - first + 1;
         bool swapped = false;
@@ -29,7 +29,7 @@ namespace mysort {
                     swapped = true;
                 }
             }
-            if (swapped = false) return;
+            if (swapped == false) return;
             swapped = false;
         }
     }
