@@ -19,8 +19,7 @@ namespace testPatterns {
     constexpr auto MAX = std::numeric_limits<TEST_ELEMENT_TYPE>::max();
 
     std::vector<TEST_ELEMENT_TYPE> originData, sortedData;
-    bool GENERATED = false;
-
+    bool IS_GENERATED = false;  // Call {generateData()} first to generate test data
     TimeCounter counter;
     std::vector<std::vector<TEST_ELEMENT_TYPE>> testGroup;
 
@@ -29,10 +28,21 @@ namespace testPatterns {
         if (dataPtr != nullptr) {
             originData = *dataPtr;
         } else {
-            originData = Rand_Normal<TEST_ELEMENT_TYPE>{}.generateVec(2000, 0, 10);
-            ////originData = Rand_Uniform<TEST_ELEMENT_TYPE>{}.generateVec(2000, -1000, 1000);
+            if (GENERATE_METHOD == GenMethod::NORMAL_DIST) {
+                double mean = 0.0;
+                double sigma = 10;
+                originData = Rand_Normal<TEST_ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, mean, sigma);
+            } else if (GENERATE_METHOD == GenMethod::UNIFORM_DIST) {
+                double mmin = -1000;
+                double mmax = 1000;
+                originData = Rand_Uniform<TEST_ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, mmin, mmax);
+            }
         }
+        std::cout << "======================================================" << std::endl;
+        std::cout << "Data generation finished.\n";
+        std::cout << "[Distribution]\n";
         DistributeVisualizer<TEST_ELEMENT_TYPE>{}(originData);
+        std::cout << "======================================================" << std::endl;
         testGroup = std::vector<decltype(originData)>(15, originData);
         sortedData = originData;
         counter.init();
@@ -41,12 +51,12 @@ namespace testPatterns {
         counter.endCounting();
         std::cout << "[std::sort]\n"
             << " >>> Time cost: " << counter.msecond() << "ms" << std::endl;
-        GENERATED = true;
+        IS_GENERATED = true;
     }
 
     void bubble_sort()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::BubbleSort(testGroup[0].begin(), 0, testGroup[0].size() - 1);
@@ -64,7 +74,7 @@ namespace testPatterns {
 
     void insertion_sort()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::InsertionSort(testGroup[1].begin(), 0, testGroup[1].size() - 1);
@@ -82,7 +92,7 @@ namespace testPatterns {
 
     void selection_sort()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::SelectionSort(testGroup[2].begin(), 0, testGroup[2].size() - 1);
@@ -100,7 +110,7 @@ namespace testPatterns {
 
     void merge_sort()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::MergeSort(testGroup[3].begin(), 0, testGroup[3].size() - 1, MIN, MAX);
@@ -118,7 +128,7 @@ namespace testPatterns {
 
     void quick_sort_Hoare()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Hoare(testGroup[4].begin(), 0, testGroup[4].size() - 1);
@@ -136,7 +146,7 @@ namespace testPatterns {
 
     void quick_sort_Hoare_rand()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Hoare_rand(testGroup[5].begin(), 0, testGroup[5].size() - 1);
@@ -155,7 +165,7 @@ namespace testPatterns {
 
     void quick_sort_Hoare_rand_insertion()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Hoare_rand_insertion(testGroup[6].begin(), 0, testGroup[6].size() - 1);
@@ -173,7 +183,7 @@ namespace testPatterns {
 
     void quick_sort_Lomuto()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Lomuto(testGroup[7].begin(), 0, testGroup[7].size() - 1);
@@ -191,7 +201,7 @@ namespace testPatterns {
 
     void quick_sort_Lomuto_tailRecOpt()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_TailRecOpt_Lomuto(testGroup[8].begin(), 0, testGroup[8].size() - 1);
@@ -209,7 +219,7 @@ namespace testPatterns {
 
     void quick_sort_Lomuto_rand()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Lomuto_rand(testGroup[9].begin(), 0, testGroup[9].size() - 1);
@@ -227,7 +237,7 @@ namespace testPatterns {
 
     void quick_sort_Lomuto_rand_duplicated()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Lomuto_rand_duplicated(testGroup[10].begin(), 0, testGroup[10].size() - 1);
@@ -245,7 +255,7 @@ namespace testPatterns {
 
     void quick_sort_Lomuto_rand_duplicated_insertion()
     {
-        if (!GENERATED) throw "[ERR] Use {generateData()} to sort {sortedData} first!";
+        if (!IS_GENERATED) throw "[ERR] Use {generateData()} first!";
         counter.init();
         counter.startCounting();
         mysort::QuickSort_Lomuto_rand_duplicated_insertion(testGroup[11].begin(), 0, testGroup[11].size() - 1);

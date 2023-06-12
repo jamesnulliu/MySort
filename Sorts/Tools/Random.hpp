@@ -13,16 +13,16 @@ public:
     Rand_Uniform& operator()(const Rand_Uniform&) = delete;
 
 public:
-    inline _ValTy operator()(_ValTy min, _ValTy max) const
+    inline _ValTy operator()(double min, double max) const
     {
-        std::uniform_real_distribution<double> distribution((double)min, (double)max);
+        std::uniform_real_distribution<double> distribution(min, max);
         return (_ValTy)distribution(m_engine);
     }
 
-    std::vector<_ValTy> generateVec(size_t size, _ValTy min, _ValTy max) const
+    std::vector<_ValTy> generateVec(size_t size, double min, double max) const
     {
         std::vector<_ValTy> vec;
-        std::uniform_real_distribution<double> distribution((double)min, (double)max);
+        std::uniform_real_distribution<double> distribution(min, max);
         while (size--) { vec.push_back((_ValTy)distribution(m_engine)); }
         return vec;
     }
@@ -50,7 +50,7 @@ public:
         return static_cast<_ValTy>(distribution(m_engine));
     }
 
-    std::vector<_ValTy> generateVec(size_t size, _ValTy mean, _ValTy sigma) const
+    std::vector<_ValTy> generateVec(size_t size, double mean, double sigma) const
     {
         std::vector<_ValTy> vec;
         std::normal_distribution<double> distribution(mean, sigma);

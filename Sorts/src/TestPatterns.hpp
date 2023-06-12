@@ -1,9 +1,18 @@
 #pragma once
-#include <climits>
 #include <vector>
 
 namespace testPatterns {
+    enum class GenMethod : uint8_t
+    {
+        NORMAL_DIST, // Normal distribution
+        UNIFORM_DIST // Uniform distribution
+    };
+
+    // Change here if you want other test data ================================
     using TEST_ELEMENT_TYPE = int;
+    constexpr uint16_t NUM_OF_ELEM_TO_GENERATE = 2000;
+    constexpr GenMethod GENERATE_METHOD = GenMethod::UNIFORM_DIST;
+    // ========================================================================
 
     void generateData(std::vector<TEST_ELEMENT_TYPE>* dataPtr = nullptr);
     void bubble_sort();
