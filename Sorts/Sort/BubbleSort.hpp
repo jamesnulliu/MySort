@@ -35,14 +35,39 @@ namespace mysort
 
     template<class _RandIt, class _Pr = std::less<void>>
     void BubbleSort_LastSwap(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
-        indext lastSwap = 0;
-        for (sizet boundary = last - first; boundary > 0; boundary = lastSwap, lastSwap = 0) {
+        sizet boundary = last - first;
+        while (boundary > 0) {
+            indext lastSwap = 0;
             for (indext j = 0; j < boundary; ++j) {
                 if (comp(*(seq + j + 1), *(seq + j))) {
                     std::iter_swap(seq + j, seq + j + 1);
                     lastSwap = j;
                 }
             }
+            boundary = lastSwap;
+        }
+    }
+
+    template<class _RandIt, class _Pr = std::less<void>>
+    void BubbleSort_Bidirectional_LastSwap(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+        sizet leftBoundary = 0, rightBoundary = last - first;
+        while (leftBoundary < rightBoundary) {
+            indext lastSwap = leftBoundary;
+            for (indext j = leftBoundary; j < rightBoundary; ++j) {
+                if (comp(*(seq + j + 1), *(seq + j))) {
+                    std::iter_swap(seq + j, seq + j + 1);
+                    lastSwap = j;
+                }
+            }
+            if (lastSwap == leftBoundary) { break; }
+            rightBoundary = lastSwap;
+            for (indext j = rightBoundary; j > leftBoundary; --j) {
+                if (comp(*(seq + j), *(seq + j - 1))) {
+                    std::iter_swap(seq + j - 1, seq + j);
+                    lastSwap = j;
+                }
+            }
+            leftBoundary = lastSwap;
         }
     }
 }
