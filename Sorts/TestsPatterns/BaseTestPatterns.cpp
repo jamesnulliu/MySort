@@ -23,13 +23,13 @@ namespace testPatterns {
             break;
         }
         case GenMethod::ORDERED: {
-            for (uint16_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+            for (size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
                 originData.push_back((ELEMENT_TYPE)((MIN + MAX) / 2) + (ELEMENT_TYPE)i);
             }
             break;
         }
         case GenMethod::REVERSE_ORDERED: {
-            for (uint16_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+            for (size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
                 originData.push_back((ELEMENT_TYPE)((MIN + MAX) / 2) - (ELEMENT_TYPE)i);
             }
             break;

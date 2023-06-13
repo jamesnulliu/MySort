@@ -13,12 +13,12 @@ namespace testPatterns {
         OUTER             // Outer created data
     };
 
-    using ELEMENT_TYPE = double; // The element type of the testing sequence
+    using ELEMENT_TYPE = int; // The element type of the testing sequence
 
     constexpr auto MIN = std::numeric_limits<ELEMENT_TYPE>::lowest();
     constexpr auto MAX = std::numeric_limits<ELEMENT_TYPE>::max();
 
-    constexpr size_t NUM_OF_ELEM_TO_GENERATE = 1000000ULL;
+    constexpr size_t NUM_OF_ELEM_TO_GENERATE = 50000ULL;
     constexpr GenMethod GENERATE_METHOD = GenMethod::NORMAL_DIST;
 
     // Normal distribution params

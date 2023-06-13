@@ -6,13 +6,13 @@ Only for visual studio 2022 currently (msvc v143).
 Based on C++ 20 standard.
 
 ## Implemented Algorithm
-1. bubble sort (origin / stop when no swap happens)
+1. bubble sort (origin / stop when no swap happens / narrow the range of iteration)
 2. insertion sort
 3. selection sort
 4. merge sort
 5. quick sort
    - Hoare (primitive / randomly choose pivot / insertion sort)
-   - Lomuto (primitive / tail recursive optimization / randomly choose pivot / handel duplicated sequence)
+   - Lomuto (primitive / tail recursion optimization / randomly choose pivot / handel duplicated sequence)
 6. ...
 
 ## Features
