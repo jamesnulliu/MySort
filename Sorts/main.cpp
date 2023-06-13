@@ -1,5 +1,7 @@
 #include "TestsPatterns/TestPatterns.hpp"
-int main() {
+
+int main()
+{
     testPatterns::generateData();
     testPatterns::BubbleSort().test();
     testPatterns::BubbleSort_Stop().test();
