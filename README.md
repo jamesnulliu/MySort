@@ -6,7 +6,7 @@ Only for visual studio 2022 currently (msvc v143).
 Based on C++ 20 standard.
 
 ## Implemented Algorithm
-1. bubble sort (origin / stop when no swap happens / narrow the range of iteration)
+1. bubble sort (origin / stop when no swap happens / narrow the boundary/ narrow the boundary in both directions)
 2. insertion sort
 3. selection sort
 4. merge sort
