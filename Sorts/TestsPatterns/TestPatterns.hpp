@@ -8,7 +8,8 @@
 #include "../Sort/QuickSort.hpp"
 #include "../Sort/SelectionSort.hpp"
 
-namespace testPatterns {
+namespace testPatterns
+{
     class BubbleSort : public BaseTestPattern
     {
     public:
@@ -32,10 +33,20 @@ namespace testPatterns {
     class BubbleSort_LastSwap : public BaseTestPattern
     {
     public:
-        explicit BubbleSort_LastSwap() : BaseTestPattern("[Bubble Sort] --narrow_the_range_of_iteration") {}
+        explicit BubbleSort_LastSwap() : BaseTestPattern("[Bubble Sort] --narrow_the_boundary") {}
     private:
         virtual void sort_impl() {
             mysort::BubbleSort_LastSwap(m_testData.begin(), 0, m_testData.size() - 1);
+        }
+    };
+
+    class BubbleSort_Bidirectional_LastSwap : public BaseTestPattern
+    {
+    public:
+        explicit BubbleSort_Bidirectional_LastSwap() : BaseTestPattern("[Bubble Sort] --narrow_the_boundary_in_both_directions") {}
+    private:
+        virtual void sort_impl() {
+            mysort::BubbleSort_Bidirectional_LastSwap(m_testData.begin(), 0, m_testData.size() - 1);
         }
     };
 
