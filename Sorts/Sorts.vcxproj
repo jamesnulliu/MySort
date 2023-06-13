@@ -139,21 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DataConfig.hpp" />
     <ClInclude Include="Sort\BubbleSort.hpp" />
     <ClInclude Include="Sort\InsertionSort.hpp" />
     <ClInclude Include="Sort\MergeSort.hpp" />
     <ClInclude Include="Sort\PreDefined.hpp" />
     <ClInclude Include="Sort\QuickSort.hpp" />
     <ClInclude Include="Sort\SelectionSort.hpp" />
-    <ClInclude Include="Tests\Params.hpp" />
-    <ClInclude Include="Tests\BaseTestPattern.hpp" />
-    <ClInclude Include="Tests\TestPatterns.hpp" />
+    <ClInclude Include="TestsPatterns\BaseTestPattern.hpp" />
+    <ClInclude Include="TestsPatterns\TestPatterns.hpp" />
     <ClInclude Include="Tools\Random.hpp" />
     <ClInclude Include="Tools\TimeCounter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Tests\BaseTestPatterns.cpp" />
+    <ClCompile Include="TestsPatterns\BaseTestPatterns.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,15 +1,12 @@
 #pragma once
 #include "../Tools/TimeCounter.hpp"
 #include "../Tools/Random.hpp"
-#include "Params.hpp"
+#include "../DataConfig.hpp"
 
 #include <vector>
 #include <memory>
 
 namespace testPatterns {
-    constexpr auto MIN = std::numeric_limits<ELEMENT_TYPE>::lowest();
-    constexpr auto MAX = std::numeric_limits<ELEMENT_TYPE>::max();
-
     void generateData();
 
     class BaseTestPattern

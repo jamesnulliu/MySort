@@ -65,9 +65,9 @@ namespace mysort {
         indext mid = // index of the median
             (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
             : (comp(*(seq + vec[1]), *(seq + vec[0])) && comp(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                  // otherwise               => C is median
+            : vec[2];                                                                                      // otherwise               => C is median
         std::iter_swap(seq + last, seq + mid);
-        return _partition_Lomuto_rand(seq, first, last, comp);
+        return _partition_Lomuto(seq, first, last, comp);
     }
 
     template<class _RandIt, class _Pr = std::less<void>>
@@ -98,7 +98,7 @@ namespace mysort {
         indext mid = // index of the median
             (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
             : (comp(*(seq + vec[1]), *(seq + vec[0])) && comp(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                  // otherwise               => C is median
+            : vec[2];                                                                                      // otherwise               => C is median
         std::iter_swap(seq + last, seq + mid);
         auto x = *(seq + last); // The pivot
 
@@ -199,7 +199,7 @@ namespace mysort {
         indext mid = // index of the median
             (comp1(*(seq + vec[0]), *(seq + vec[1])) && comp1(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
             : (comp1(*(seq + vec[1]), *(seq + vec[0])) && comp1(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                  // otherwise               => C is median
+            : vec[2];                                                                                        // otherwise               => C is median
         std::iter_swap(seq + first, seq + mid);
 
         auto x = *(seq + first);
