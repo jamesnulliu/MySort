@@ -4,8 +4,8 @@
 #include <algorithm>
 
 namespace mysort {
-    template<class _RandIt, class _Pr = std::less<void>>
-    void InsertionSort(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class _Pr = std::less<void>>
+    void InsertionSort(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         for (indext j = first + 1; j <= last; ++j) {
             auto key = *(seq + j);

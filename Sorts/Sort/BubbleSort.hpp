@@ -3,10 +3,9 @@
 
 #include <algorithm>
 
-namespace mysort
-{
-    template<class _RandIt, class _Pr = std::less<void>>
-    void BubbleSort(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+namespace mysort {
+    template<class _It, class _Pr = std::less<void>>
+    void BubbleSort(_It seq, indext first, indext last, const _Pr& comp = {}) {
         sizet size = last - first + 1;
         for (indext i = 1; i < size; ++i) {
             for (indext j = 0; j < size - i; ++j) {
@@ -17,8 +16,8 @@ namespace mysort
         }
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void BubbleSort_Stop(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+    template<class _It, class _Pr = std::less<void>>
+    void BubbleSort_Stop(_It seq, indext first, indext last, const _Pr& comp = {}) {
         sizet size = last - first + 1;
         bool swapped = false;
         for (indext i = 1; i < size; ++i) {
@@ -33,8 +32,8 @@ namespace mysort
         }
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void BubbleSort_LastSwap(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+    template<class _It, class _Pr = std::less<void>>
+    void BubbleSort_LastSwap(_It seq, indext first, indext last, const _Pr& comp = {}) {
         sizet boundary = last - first;
         while (boundary > 0) {
             indext lastSwap = 0;
@@ -48,8 +47,8 @@ namespace mysort
         }
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void BubbleSort_Bidirectional_LastSwap(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+    template<class _It, class _Pr = std::less<void>>
+    void BubbleSort_Bidirectional_LastSwap(_It seq, indext first, indext last, const _Pr& comp = {}) {
         sizet leftBoundary = 0, rightBoundary = last - first;
         while (leftBoundary < rightBoundary) {
             indext lastSwap = leftBoundary;

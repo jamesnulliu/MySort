@@ -4,8 +4,8 @@
 #include <algorithm>
 
 namespace mysort {
-    template<class _RandIt, class _Pr = std::less<void>>
-    void SelectionSort(_RandIt seq, indext first, indext last, const _Pr& comp = {}) {
+    template<class _It, class _Pr = std::less<void>>
+    void SelectionSort(_It seq, indext first, indext last, const _Pr& comp = {}) {
         for (indext i = first; i < last; ++i) {
             // The index of the smallest (or largest) elem in {seq[i : last-1]} (should be)
             indext selected = i;

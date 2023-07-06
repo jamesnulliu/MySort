@@ -10,8 +10,8 @@ namespace mysort {
     // | {seq[first : q - 1]} <=(or >=) {seq[q]} and, in turn, {seq[q]} <=(or >=) each
     // | element of {seq[q+1 : last]}
     // [*] Following partition always chooses the last element to be {[q]}
-    template<class _RandIt, class _Pr>
-    indext _partition_Lomuto(_RandIt seq, indext first, indext last, const _Pr& comp)
+    template<class _It, class _Pr>
+    indext _partition_Lomuto(_It seq, indext first, indext last, const _Pr& comp)
     {
         auto x = *(seq + last); // The chosen pivot
         indext i = first - 1;
@@ -27,8 +27,8 @@ namespace mysort {
         return i;
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void QuickSort_Lomuto(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class _Pr = std::less<void>>
+    void QuickSort_Lomuto(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         if (first >= last) return;
         // Always choose the last (or the first) element as pivot
@@ -40,8 +40,8 @@ namespace mysort {
     }
 
     // Tail-Recursive Optimization of {quickSort_Lomuto()}
-    template<class _RandIt, class _Pr = std::less<void>>
-    void QuickSort_Lomuto_TailRecOpt(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class _Pr = std::less<void>>
+    void QuickSort_Lomuto_TailRecOpt(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         while (first < last) {
             indext p = _partition_Lomuto(seq, first, last, comp);
@@ -55,8 +55,8 @@ namespace mysort {
     // | {seq[first : q - 1]} <=(or >=) {seq[q]} and, in turn, {seq[q]} <=(or >=) each
     // | element of {seq[q+1 : last]}
     // [*] Index {q} is chosen randomly, with the method: Median-of-3 Partition
-    template<class _RandIt, class _Pr>
-    indext _partition_Lomuto_rand(_RandIt seq, indext first, indext last, const _Pr& comp)
+    template<class _It, class _Pr>
+    indext _partition_Lomuto_rand(_It seq, indext first, indext last, const _Pr& comp)
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
@@ -70,8 +70,8 @@ namespace mysort {
         return _partition_Lomuto(seq, first, last, comp);
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void QuickSort_Lomuto_Rand(_RandIt seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class _Pr = std::less<void>>
+    void QuickSort_Lomuto_Rand(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         if (first >= last) return;
         // If the pivot is choosen randomly, the algorithm does not rely on the input seq
@@ -88,8 +88,8 @@ namespace mysort {
     // | elems in {seq[n+1 : last]} all larger(or less) than the pivot
     // [*] Index of pivot is chosen randomly, with the method: Median-of-3 Partition
     // [*] Repitition optimized.
-    template<class _RandIt, class _Pr1, class _Pr2>
-    indext* _partition_Lomuto_rand_duplicated(_RandIt seq, indext first, indext last, const _Pr1& comp, const _Pr2& equal)
+    template<class _It, class _Pr1, class _Pr2>
+    indext* _partition_Lomuto_rand_duplicated(_It seq, indext first, indext last, const _Pr1& comp, const _Pr2& equal)
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
@@ -125,8 +125,8 @@ namespace mysort {
         return (new indext[2]{ eqLeft, i });
     }
 
-    template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_Rand_Duplicated(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
+    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
+    void QuickSort_Lomuto_Rand_Duplicated(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
     {
         if (first >= last) return;
         // See comments of function {Paritition_rand_duplicated_Lomuto()}
@@ -136,8 +136,8 @@ namespace mysort {
         delete p;
     }
 
-    template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_Rand_Duplicated_Insertion(_RandIt seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {}, sizet cut = 10LL)
+    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
+    void QuickSort_Lomuto_Rand_Duplicated_Insertion(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {}, sizet cut = 10LL)
     {
         if (first >= last) return;
         // Use insertion sort if the length is shorter than {cut}
@@ -156,8 +156,8 @@ namespace mysort {
     // | swaps on average, and it creates efficient partitions even when all values are equal
     // [*] The pivot's final location is not necessarily at the index that was returned
     // [*] If input array is already sorted, complexity will also degrade to O(n^2)
-    template<class _RandIt, class _Pr1, class _Pr2>
-    indext _partition_Hoare(_RandIt seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
+    template<class _It, class _Pr1, class _Pr2>
+    indext _partition_Hoare(_It seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
     {
         auto x = *(seq + first);
         indext i = first - 1;
@@ -175,8 +175,8 @@ namespace mysort {
     }
 
     // Hoare's primitive quick sort is basically the fastest if the input scale is large, with the least use of swap.
-    template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
+    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
+    void QuickSort_Hoare(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
         if (first >= last) return;
         indext p = _partition_Hoare(seq, first, last, comp1, comp2);
         QuickSort_Hoare(seq, first, p, comp1, comp2);
@@ -189,8 +189,8 @@ namespace mysort {
     // | swaps on average, and it creates efficient partitions even when all values are equal
     // [*] The pivot's final location is not necessarily at the index that was returned
     // [*] Pivot is chosen randomly, with the method: Median-of-3 Partition
-    template<class _RandIt, class _Pr1, class _Pr2>
-    indext _partition_Hoare_rand(_RandIt seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
+    template<class _It, class _Pr1, class _Pr2>
+    indext _partition_Hoare_rand(_It seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
     {
         // Get 3 index randomly in range of [first, last]:
         Rand_Uniform<indext> randGenerator;
@@ -217,16 +217,16 @@ namespace mysort {
         }
     }
 
-    template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_Rand(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
+    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
+    void QuickSort_Hoare_Rand(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
         if (first >= last) return;
         indext p = _partition_Hoare_rand(seq, first, last, comp1, comp2);
         QuickSort_Hoare_Rand(seq, first, p, comp1, comp2);
         QuickSort_Hoare_Rand(seq, p + 1, last, comp1, comp2);
     }
 
-    template<class _RandIt, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_Rand_Insertion(_RandIt seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}, sizet cut = 10LL) {
+    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
+    void QuickSort_Hoare_Rand_Insertion(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}, sizet cut = 10LL) {
         if (first >= last) return;
         if (last - first + 1LL == cut) {
             InsertionSort(seq, first, last, comp1);

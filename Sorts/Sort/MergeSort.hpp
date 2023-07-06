@@ -2,13 +2,16 @@
 #include "PreDefined.hpp"
 #include <algorithm>
 #include <vector>
+#include <limits>
 
 namespace mysort {
-    template<class _RandIt, class _Pr>
-    void _merge(_RandIt seq, indext subAFirst, indext subALast, indext subBLast, const auto MIN, const auto MAX, const _Pr& comp)
+    template<class _It, class _Pr>
+    void _merge(_It seq, indext subAFirst, indext subALast, indext subBLast, const auto MIN, const auto MAX, const _Pr& comp)
     {
         // {END} is set at the end of each subarray.
         auto END = comp(MIN, MAX) ? MAX : MIN;
+
+        std::numeric_limits<decltype(*_It)>::max();
 
         sizet sizeSubA = subALast - subAFirst + 2;
         sizet sizeSubB = subBLast - subALast + 1;
@@ -36,8 +39,8 @@ namespace mysort {
         delete[] subB;
     }
 
-    template<class _RandIt, class _Pr = std::less<void>>
-    void MergeSort(_RandIt seq, indext first, indext last, const auto MIN, const auto MAX, const _Pr& comp = {})
+    template<class _It, class _Pr = std::less<void>>
+    void MergeSort(_It seq, indext first, indext last, const auto MIN, const auto MAX, const _Pr& comp = {})
     {
         if (first >= last) return;
         indext mid = (first + last) / 2;

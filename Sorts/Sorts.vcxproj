@@ -143,6 +143,7 @@
     <ClInclude Include="Sort\BubbleSort.hpp" />
     <ClInclude Include="Sort\InsertionSort.hpp" />
     <ClInclude Include="Sort\MergeSort.hpp" />
+    <ClInclude Include="Sort\MySort.h" />
     <ClInclude Include="Sort\PreDefined.hpp" />
     <ClInclude Include="Sort\QuickSort.hpp" />
     <ClInclude Include="Sort\SelectionSort.hpp" />
