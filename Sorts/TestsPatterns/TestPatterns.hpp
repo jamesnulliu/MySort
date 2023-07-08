@@ -8,8 +8,7 @@
 #include "../Sort/QuickSort.hpp"
 #include "../Sort/SelectionSort.hpp"
 
-namespace testPatterns
-{
+namespace testPatterns {
     class BubbleSort : public BaseTestPattern
     {
     public:
@@ -79,23 +78,23 @@ namespace testPatterns
         }
     };
 
-    class QuickSort_Lomuto : public BaseTestPattern
+    class quickSort_Lomuto : public BaseTestPattern
     {
     public:
-        explicit QuickSort_Lomuto() : BaseTestPattern("[Quick Sort] --Lomuto") {}
+        explicit quickSort_Lomuto() : BaseTestPattern("[Quick Sort] --Lomuto") {}
     private:
         virtual void sort_impl() {
-            mysort::QuickSort_Lomuto(m_testData.begin(), 0, m_testData.size() - 1);
+            mysort::quickSort_Lomuto(m_testData.begin(), 0, m_testData.size() - 1);
         }
     };
 
-    class QuickSort_Lomuto_TailRecOpt : public BaseTestPattern
+    class quickSort_Lomuto_tailRecOpt : public BaseTestPattern
     {
     public:
-        explicit QuickSort_Lomuto_TailRecOpt() : BaseTestPattern("[Quick Sort] --Lomuto, tail_recursion_optimization") {}
+        explicit quickSort_Lomuto_tailRecOpt() : BaseTestPattern("[Quick Sort] --Lomuto, tail_recursion_optimization") {}
     private:
         virtual void sort_impl() {
-            mysort::QuickSort_Lomuto_TailRecOpt(m_testData.begin(), 0, m_testData.size() - 1);
+            mysort::quickSort_Lomuto_tailRecOpt(m_testData.begin(), 0, m_testData.size() - 1);
         }
     };
 
@@ -108,12 +107,12 @@ namespace testPatterns
         }
     };
 
-    class QuickSort_Lomuto_Rand_Duplicated : public BaseTestPattern
+    class quickSort_Lomuto_rand_duplicated : public BaseTestPattern
     {
     public:
-        explicit QuickSort_Lomuto_Rand_Duplicated() : BaseTestPattern("[Quick Sort] --Lomuto, rand, duplicated_opt") {}
+        explicit quickSort_Lomuto_rand_duplicated() : BaseTestPattern("[Quick Sort] --Lomuto, rand, duplicated_opt") {}
         virtual void sort_impl() {
-            mysort::QuickSort_Lomuto_Rand_Duplicated(m_testData.begin(), 0, m_testData.size() - 1);
+            mysort::quickSort_Lomuto_rand_duplicated(m_testData.begin(), 0, m_testData.size() - 1);
         }
     };
 
@@ -127,13 +126,13 @@ namespace testPatterns
         }
     };
 
-    class QuickSort_Hoare : public BaseTestPattern
+    class quickSort_Hoare : public BaseTestPattern
     {
     public:
-        explicit QuickSort_Hoare() : BaseTestPattern("[Quick Sort] --Hoare") {}
+        explicit quickSort_Hoare() : BaseTestPattern("[Quick Sort] --Hoare") {}
     private:
         virtual void sort_impl() {
-            mysort::QuickSort_Hoare(m_testData.begin(), 0, m_testData.size() - 1);
+            mysort::quickSort_Hoare(m_testData.begin(), 0, m_testData.size() - 1);
         }
     };
 

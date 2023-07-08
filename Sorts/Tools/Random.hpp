@@ -5,7 +5,7 @@
 #include <numeric>
 
 template<class _ValTy>
-    requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
+    requires std::integral<_ValTy> || std::_Is_any_of_v<std::remove_cv_t<_ValTy>, float, double>
 class Rand_Uniform
 {
 public:
@@ -15,8 +15,10 @@ public:
 public:
     inline _ValTy operator()(double min, double max) const
     {
-        std::uniform_real_distribution<double> distribution(min, max);
-        return (_ValTy)distribution(m_engine);
+        if (m_distribution == nullptr || m_distribution->min() != min || m_distribution->max() != max) {
+            m_distribution = new std::uniform_real_distribution<double>(min, max);
+        }
+        return (_ValTy)m_distribution->operator()(m_engine);
     }
 
     std::vector<_ValTy> generateVec(size_t size, double min, double max) const
@@ -29,15 +31,21 @@ public:
 
 private:
     static std::random_device _rd;
-    static std::default_random_engine m_engine;
+    static thread_local std::default_random_engine m_engine;
+    static std::uniform_real_distribution<double>* m_distribution;
 };
 
 template<class _ValTy>
-    requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
+    requires std::integral<_ValTy> || std::_Is_any_of_v<std::remove_cv_t<_ValTy>, float, double>
 std::random_device Rand_Uniform<_ValTy>::_rd{};
+
 template<class _ValTy>
     requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
-std::default_random_engine Rand_Uniform<_ValTy>::m_engine{ _rd() };
+thread_local std::default_random_engine Rand_Uniform<_ValTy>::m_engine{ _rd() };
+
+template<class _ValTy>
+    requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
+static std::uniform_real_distribution<double>* Rand_Uniform<_ValTy>::m_distribution;
 
 template<class _ValTy>
     requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
@@ -60,7 +68,7 @@ public:
 
 private:
     static std::random_device _rd;
-    static std::default_random_engine m_engine;
+    static thread_local std::default_random_engine m_engine;
 };
 
 template<class _ValTy>
@@ -68,7 +76,7 @@ template<class _ValTy>
 std::random_device Rand_Normal<_ValTy>::_rd{};
 template<class _ValTy>
     requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
-std::default_random_engine Rand_Normal<_ValTy>::m_engine{ _rd() };
+thread_local std::default_random_engine Rand_Normal<_ValTy>::m_engine{ _rd() };
 
 template<class _ValTy>
 class DistributionVisualizer

@@ -28,24 +28,24 @@ namespace mysort {
     }
 
     template<class _It, class _Pr = std::less<void>>
-    void QuickSort_Lomuto(_It seq, indext first, indext last, const _Pr& comp = {})
+    void quickSort_Lomuto(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         if (first >= last) return;
         // Always choose the last (or the first) element as pivot
         // If the seq is already sorted (or reverse-sorted),
         // | the complexity rises to O(n^2)
         indext p = _partition_Lomuto(seq, first, last, comp);
-        QuickSort_Lomuto(seq, first, p - 1, comp);
-        QuickSort_Lomuto(seq, p + 1, last, comp);
+        quickSort_Lomuto(seq, first, p - 1, comp);
+        quickSort_Lomuto(seq, p + 1, last, comp);
     }
 
     // Tail-Recursive Optimization of {quickSort_Lomuto()}
     template<class _It, class _Pr = std::less<void>>
-    void QuickSort_Lomuto_TailRecOpt(_It seq, indext first, indext last, const _Pr& comp = {})
+    void quickSort_Lomuto_tailRecOpt(_It seq, indext first, indext last, const _Pr& comp = {})
     {
         while (first < last) {
             indext p = _partition_Lomuto(seq, first, last, comp);
-            QuickSort_Lomuto_TailRecOpt(seq, first, p - 1, comp);
+            quickSort_Lomuto_tailRecOpt(seq, first, p - 1, comp);
             first = p + 1;
         }
     }
@@ -126,13 +126,13 @@ namespace mysort {
     }
 
     template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_Rand_Duplicated(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
+    void quickSort_Lomuto_rand_duplicated(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
     {
         if (first >= last) return;
         // See comments of function {Paritition_rand_duplicated_Lomuto()}
         indext* p = _partition_Lomuto_rand_duplicated(seq, first, last, comp, equal);
-        QuickSort_Lomuto_Rand_Duplicated(seq, first, p[0] - 1, comp, equal);
-        QuickSort_Lomuto_Rand_Duplicated(seq, p[1] + 1, last, comp, equal);
+        quickSort_Lomuto_rand_duplicated(seq, first, p[0] - 1, comp, equal);
+        quickSort_Lomuto_rand_duplicated(seq, p[1] + 1, last, comp, equal);
         delete p;
     }
 
@@ -176,11 +176,11 @@ namespace mysort {
 
     // Hoare's primitive quick sort is basically the fastest if the input scale is large, with the least use of swap.
     template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
+    void quickSort_Hoare(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
         if (first >= last) return;
         indext p = _partition_Hoare(seq, first, last, comp1, comp2);
-        QuickSort_Hoare(seq, first, p, comp1, comp2);
-        QuickSort_Hoare(seq, p + 1, last, comp1, comp2);
+        quickSort_Hoare(seq, first, p, comp1, comp2);
+        quickSort_Hoare(seq, p + 1, last, comp1, comp2);
     }
 
     // Partition the array to 2 subarrays, any element in {seq[first : j]} is smaller (or larger)
