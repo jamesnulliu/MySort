@@ -1,38 +1,10 @@
 #pragma once
+
 #include <algorithm>
 #include "../Tools/Random.hpp"
-#include <any>
-
-template<class _It>
-concept Iterator_Can_Index = requires(_It iter, uint64_t i) {
-    {iter[i]} -> std::same_as<decltype(*iter)>;
-};
-
-template<class _It>
-concept Iterator_Can_Add_N = requires(_It iter, uint64_t i) {
-    {iter + i}->std::same_as<_It>;
-};
-
-template<class _It>
-concept Iterator_Can_Sub_N = requires(_It iter, uint64_t i) {
-    {iter - i}->std::same_as<_It>;
-};
-
-template<class _It>
-concept Iterator_Can_PlusPlus = requires(_It iter) {
-    {++iter}->std::same_as<_It&>;
-    {iter++}->std::same_as<_It>;
-};
-
-template<class _It>
-concept Iterator_Can_MinusMinus = requires(_It iter) {
-    {--iter}->std::same_as<_It&>;
-    {iter--}->std::same_as<_It>;
-};
 
 class MySort
 {
-public:
 public:
 
     enum class SORT_METHOD
@@ -40,91 +12,110 @@ public:
         BUBBLE, BUBBLE_STOP, BUBBLE_LASTSWAP
     };
 
-    template<class _It, class _Pr = std::less<void>>
+    template<class _It, class... _Prs>
         requires std::forward_iterator<_It>
-    void bubbleSort(_It _begin, _It _end, const _Pr& comp = {})
+    void bubbleSort(_It _begin, _It _end, const _Prs&... predicates)
     {
         if (_begin == _end) return;
-        for (auto i = _begin + 1; i != _end; ++i) {
-            for (auto j = _begin; j + 1 < _end; ++j) {
-                if (comp(*(j + 1), *j)) {
-                    std::iter_swap(j, j + 1);
+
+        auto comp = std::get<0>(predicates);
+
+        _It mark{ std::_Next_iter(_begin) };
+        for (_It itA = std::_Next_iter(_begin); itA != _end; ++itA) {
+            for (_It itB = _begin, itM = mark; itM != _end; ++itB, ++itM) {
+                if (comp(*std::_Next_iter(itB), *itB)) {
+                    std::iter_swap(itB, std::_Next_iter(itB));
                 }
             }
+            ++mark;
         }
     }
 
-    template<class _It, class _Pr = std::less<void>>
+    template<class _It, class... _Prs>
         requires std::forward_iterator<_It>
-    void bubbleSort_stop(_It _begin, _It _end, const _Pr& comp = {})
+    void bubbleSort_stop(_It _begin, _It _end, const _Prs&... predicates)
     {
         if (_begin == _end) return;
-        bool swapped = false;
-        for (auto i = _begin + 1; i != _end; ++i) {
-            for (auto j = _begin; j + 1 != _end; ++j) {
-                if (comp(*(j + 1), *j)) {
-                    std::iter_swap(j, j + 1);
+
+        auto comp = std::get<0>(predicates);
+
+        _It mark{ std::_Next_iter(_begin) };
+        for (_It itA = _begin + 1; itA != _end; ++itA) {
+            bool swapped{ false };
+            for (_It itB = _begin, itM = mark; itM != _end; ++itB, ++itM) {
+                if (comp(*std::_Next_iter(itB), *itB)) {
+                    std::iter_swap(itB, std::_Next_iter(itB));
                     swapped = true;
                 }
             }
             if (swapped == false) return;
-            swapped = false;
+            ++mark;
         }
     }
 
-    template<class _It, class _Pr = std::less<void>>
+    template<class _It, class... _Prs>
         requires std::forward_iterator<_It>
-    void bubbleSort__endSwap(_It _begin, _It _end, const _Pr& comp = {})
+    void bubbleSort_narrowBoundary(_It _begin, _It _ends, const _Prs&... predicates)
     {
         if (_begin == _end) return;
-        _It boundary = _end;
-        while (boundary != _begin) {
-            _It _endSwap{};
-            for (auto j = _begin; j + 1 != boundary; ++j) {
-                if (comp(*(j + 1), *j)) {
-                    std::iter_swap(j, j + 1);
-                    _endSwap = j;
-                }
-            }
-            boundary = _endSwap + 1;
-        }
-    }
 
-    template<class _It, class _Pr = std::less<void>>
-        requires std::forward_iterator<_It>
-    void bubbleSort_deLastSwap(_It _begin, _It _end, const _Pr& comp = {}) {
-        if (_begin == _end) return;
-        _It leftBoundary{ _begin }, rightBoundary{ _end }, _endSwap{};
+        auto comp = std::get<0>(predicates);
+
+        _It leftBoundary = _begin, rightBoundary = _end;
         while (leftBoundary != rightBoundary) {
-            _endSwap = leftBoundary;
-            for (auto j = leftBoundary; j != rightBoundary; ++j) {
-                if (comp(*(j + 1), *j)) {
-                    std::iter_swap(j, j + 1);
-                    _endSwap = j;
+            _It lastSwap = leftBoundary;
+            for (_It itA = leftBoundary; itA + 1 != rightBoundary; ++itA) {
+                if (comp(*std::_Next_iter(itA), *itA)) {
+                    std::iter_swap(itA, std::_Next_iter(itA));
+                    lastSwap = itA;
                 }
             }
-            if (_endSwap == leftBoundary) break;
-            rightBoundary = _endSwap + 1;
-            for (itB = leftBoundary; itB + 1 != rightBoundary; ++itB) {
-                if (comp(*(itB + 1), *itB)) {
-                    std::iter_swap(itB, itB + 1);
-                    _endSwap = itB + 2;
+
+            if (lastSwap == leftBoundary) break;
+            rightBoundary = lastSwap + 1;
+
+            if constexpr (std::_Is_ranges_bidi_iter_v<_It>) {
+                for (_It j = std::_Prev_iter(rightBoundary); j != leftBoundary; --j) {
+                    if (comp(*j, *std::_Prev_iter(j))) {
+                        std::iter_swap(std::_Prev_iter(j), j);
+                        lastSwap = j;
+                    }
                 }
             }
-            leftBoundary = _endSwap;
+            leftBoundary = lastSwap;
         }
     }
 
-    template<class _It, class _Pr = std::less<void>>
+    template<class _It, class... _Prs>
         requires std::forward_iterator<_It>
-    void insertionSort(_It _begin, _It _end, const _Pr& comp = {})
+    void insertionSort(_It _begin, _It _end, const _Prs&... predicates)
     {
         if (_begin == _end) return;
-        for (_It j = _begin; j + 1 != _end; ++j) {
+
+        auto comp = std::get<0>(predicates);
+
+        for (_It j = _begin; std::_Next_iter(j) != _end; ++j) {
             _It i = _begin;
             while (i != j && !comp(*i, *j)) {
-                std::iter_swap(i + 1, i);
+                std::iter_swap(std::_Next_iter(i), i);
                 ++i;
+            }
+        }
+    }
+
+    template<class _It, class _Pr = std::less<void>>
+        requires std::forward_iterator<_It>
+    void selectionSort(_It _begin, _It _end, const _Pr& comp = {})
+    {
+        for (_It i = _begin; i + 1 != _end; ++i) {
+            _It selected = i;
+            for (_It j = i + 1; j != _end; ++j) {
+                if (comp(*j, *selected)) {
+                    selected = j;
+                }
+            }
+            if (selected != i) {
+                std::iter_swap(selected, i);
             }
         }
     }

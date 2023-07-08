@@ -8,14 +8,17 @@
 #include "../Sort/QuickSort.hpp"
 #include "../Sort/SelectionSort.hpp"
 
-namespace testPatterns {
+#include "../Sort/MySort.h"
+
+namespace testPatterns
+{
     class BubbleSort : public BaseTestPattern
     {
     public:
         explicit BubbleSort() : BaseTestPattern("[Bubble Sort]") {}
     private:
         virtual void sort_impl() {
-            mysort::BubbleSort(m_testData.begin(), 0, m_testData.size() - 1);
+            MySort().bubbleSort(m_testData.begin(), m_testData.end());
         }
     };
 
@@ -25,7 +28,7 @@ namespace testPatterns {
         explicit BubbleSort_Stop() : BaseTestPattern("[Bubble Sort] --stop_in_time") {}
     private:
         virtual void sort_impl() {
-            mysort::BubbleSort_Stop(m_testData.begin(), 0, m_testData.size() - 1);
+            MySort().bubbleSort_stop(m_testData.begin(), m_testData.end());
         }
     };
 
@@ -35,17 +38,7 @@ namespace testPatterns {
         explicit BubbleSort_LastSwap() : BaseTestPattern("[Bubble Sort] --narrow_the_boundary") {}
     private:
         virtual void sort_impl() {
-            mysort::BubbleSort_LastSwap(m_testData.begin(), 0, m_testData.size() - 1);
-        }
-    };
-
-    class BubbleSort_Bidirectional_LastSwap : public BaseTestPattern
-    {
-    public:
-        explicit BubbleSort_Bidirectional_LastSwap() : BaseTestPattern("[Bubble Sort] --narrow_the_boundary_in_both_directions") {}
-    private:
-        virtual void sort_impl() {
-            mysort::BubbleSort_Bidirectional_LastSwap(m_testData.begin(), 0, m_testData.size() - 1);
+            MySort().bubbleSort_narrowBoundary(m_testData.begin(), m_testData.end());
         }
     };
 
@@ -64,7 +57,7 @@ namespace testPatterns {
     public:
         explicit SelectionSort() : BaseTestPattern("[Selection Sort]") {}
         virtual void sort_impl() {
-            mysort::SelectionSort(m_testData.begin(), 0, m_testData.size() - 1);
+            MySort().selectionSort(m_testData.begin(), m_testData.end());
         }
     };
 
