@@ -7,6 +7,7 @@
 class TimeCounter
 {
     static const clock_t msPerSec = CLOCKS_PER_SEC;
+
 public:
     explicit TimeCounter() = default;
     TimeCounter& operator=(const TimeCounter&) = delete;

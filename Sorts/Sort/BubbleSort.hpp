@@ -4,69 +4,97 @@
 #include <algorithm>
 
 namespace mysort {
-    template<class _It, class _Pr = std::less<void>>
-    void BubbleSort(_It seq, indext first, indext last, const _Pr& comp = {}) {
-        sizet size = last - first + 1;
-        for (indext i = 1; i < size; ++i) {
-            for (indext j = 0; j < size - i; ++j) {
-                if (comp(*(seq + j + 1), *(seq + j))) {
-                    std::iter_swap(seq + j, seq + j + 1);
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void bubbleSort(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end) return;
+
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+
+        _It mark{ std::_Next_iter(_begin) };
+        for (_It i = std::_Next_iter(_begin); i != _end; ++i) {
+            for (_It j = _begin, itM = mark; itM != _end; ++j, ++itM) {
+                if (comp(*std::_Next_iter(j), *j)) {
+                    std::iter_swap(j, std::_Next_iter(j));
                 }
             }
+            ++mark;
         }
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void BubbleSort_Stop(_It seq, indext first, indext last, const _Pr& comp = {}) {
-        sizet size = last - first + 1;
-        bool swapped = false;
-        for (indext i = 1; i < size; ++i) {
-            for (indext j = 0; j < size - i; ++j) {
-                if (comp(*(seq + j + 1), *(seq + j))) {
-                    std::iter_swap(seq + j, seq + j + 1);
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void bubbleSort(_It _begin, _It _end) {
+        bubbleSort(_begin, _end, std::less<>{});
+    }
+
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void bubbleSort_stop(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end) return;
+
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+
+        _It mark{ std::_Next_iter(_begin) };
+        for (_It i = std::_Next_iter(_begin); i != _end; ++i) {
+            bool swapped{ false };
+            for (_It j = _begin, k = mark; k != _end; ++j, ++k) {
+                if (comp(*std::_Next_iter(j), *j)) {
+                    std::iter_swap(j, std::_Next_iter(j));
                     swapped = true;
                 }
             }
             if (swapped == false) return;
-            swapped = false;
+            ++mark;
         }
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void BubbleSort_LastSwap(_It seq, indext first, indext last, const _Pr& comp = {}) {
-        sizet boundary = last - first;
-        while (boundary > 0) {
-            indext lastSwap = 0;
-            for (indext j = 0; j < boundary; ++j) {
-                if (comp(*(seq + j + 1), *(seq + j))) {
-                    std::iter_swap(seq + j, seq + j + 1);
-                    lastSwap = j;
-                }
-            }
-            boundary = lastSwap;
-        }
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void bubbleSort_stop(_It _begin, _It _end)
+    {
+        bubbleSort_stop(_begin, _end, std::less<>{});
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void BubbleSort_Bidirectional_LastSwap(_It seq, indext first, indext last, const _Pr& comp = {}) {
-        sizet leftBoundary = 0, rightBoundary = last - first;
-        while (leftBoundary < rightBoundary) {
-            indext lastSwap = leftBoundary;
-            for (indext j = leftBoundary; j < rightBoundary; ++j) {
-                if (comp(*(seq + j + 1), *(seq + j))) {
-                    std::iter_swap(seq + j, seq + j + 1);
-                    lastSwap = j;
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end) return;
+
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+
+        _It leftBoundary = _begin, rightBoundary = _end;
+        while (leftBoundary != rightBoundary) {
+            _It lastSwap = leftBoundary;
+            for (_It i = leftBoundary; std::_Next_iter(i) != rightBoundary; ++i) {
+                if (comp(*std::_Next_iter(i), *i)) {
+                    std::iter_swap(i, std::_Next_iter(i));
+                    lastSwap = i;
                 }
             }
-            if (lastSwap == leftBoundary) { break; }
-            rightBoundary = lastSwap;
-            for (indext j = rightBoundary; j > leftBoundary; --j) {
-                if (comp(*(seq + j), *(seq + j - 1))) {
-                    std::iter_swap(seq + j - 1, seq + j);
-                    lastSwap = j;
+
+            if (lastSwap == leftBoundary) break;
+            rightBoundary = std::_Next_iter(lastSwap);
+
+            if constexpr (std::_Is_ranges_bidi_iter_v<_It>) {
+                for (_It j = std::_Prev_iter(rightBoundary); j != leftBoundary; --j) {
+                    if (comp(*j, *std::_Prev_iter(j))) {
+                        std::iter_swap(std::_Prev_iter(j), j);
+                        lastSwap = j;
+                    }
                 }
             }
             leftBoundary = lastSwap;
         }
+    }
+
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void bubbleSort_narrowBoundary(_It _begin, _It _ends)
+    {
+        bubbleSort_narrowBoundary(_begin, _ends, std::less<>{});
     }
 }

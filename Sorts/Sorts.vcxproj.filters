@@ -24,9 +24,6 @@
     <ClInclude Include="Sort\QuickSort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sort\PreDefined.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sort\MergeSort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,7 +45,10 @@
     <ClInclude Include="DataConfig.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sort\MySort.h">
+    <ClInclude Include="Sort\Utilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sort\PreDefined.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #pragma once
+#include <stdint.h>
 namespace mysort {
-    using indext = long long;
-    using sizet = long long;
+    constexpr uint64_t INSERTION_CUT = 10;
 }

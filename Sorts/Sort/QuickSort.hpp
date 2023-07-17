@@ -1,239 +1,266 @@
 #pragma once
-#include "PreDefined.hpp"
+#include "Utilities.hpp"
 #include "../Tools/Random.hpp"
 #include "InsertionSort.hpp"
+#include "PreDefined.hpp"
 #include <algorithm>
+#include <utility>
+#include <tuple>
 
 namespace mysort {
-    // Partition the array {seq[first : last]} into 2 (possibly empty) subarrays
-    // | {seq[fisrtIndex : q - 1]} and {seq[q + 1 : last]}, such that each element of
-    // | {seq[first : q - 1]} <=(or >=) {seq[q]} and, in turn, {seq[q]} <=(or >=) each
-    // | element of {seq[q+1 : last]}
-    // [*] Following partition always chooses the last element to be {[q]}
-    template<class _It, class _Pr>
-    indext _partition_Lomuto(_It seq, indext first, indext last, const _Pr& comp)
+    // TODO:
+    //   If {_begin} equals {_end} or the next iterator of {_begin} equals {_end},
+    //   some partition functions may go wrong.
+    //   Additional control flow is needed.
+
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    _It _partition_Lomuto(_It _begin, _It _end, const _Prs&... preds)
     {
-        auto x = *(seq + last); // The chosen pivot
-        indext i = first - 1;
-        indext j = first;
-        for (; j <= last - 1; ++j) {
-            if (comp(*(seq + j), x)) {
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+        auto pivot{ *_begin };
+        _It i{ _begin };
+        _It j{ std::_Next_iter(_begin) };
+        for (; j != _end; ++j) {
+            if (comp(*j, pivot)) {
                 ++i;
-                std::iter_swap(seq + i, seq + j);
+                std::iter_swap(i, j);
             }
         }
-        ++i;
-        std::iter_swap(seq + i, seq + last);
+        std::iter_swap(i, _begin);
         return i;
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void quickSort_Lomuto(_It seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto(_It _begin, _It _end, const _Prs&... preds)
     {
-        if (first >= last) return;
-        // Always choose the last (or the first) element as pivot
-        // If the seq is already sorted (or reverse-sorted),
-        // | the complexity rises to O(n^2)
-        indext p = _partition_Lomuto(seq, first, last, comp);
-        quickSort_Lomuto(seq, first, p - 1, comp);
-        quickSort_Lomuto(seq, p + 1, last, comp);
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        _It pivot = _partition_Lomuto(_begin, _end, preds...);
+        quickSort_Lomuto(_begin, pivot, preds...);
+        quickSort_Lomuto(++pivot, _end, preds...);
     }
 
-    // Tail-Recursive Optimization of {quickSort_Lomuto()}
-    template<class _It, class _Pr = std::less<void>>
-    void quickSort_Lomuto_tailRecOpt(_It seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto(_It _begin, _It _end)
     {
-        while (first < last) {
-            indext p = _partition_Lomuto(seq, first, last, comp);
-            quickSort_Lomuto_tailRecOpt(seq, first, p - 1, comp);
-            first = p + 1;
+        quickSort_Lomuto(_begin, _end, std::less<>{});
+    }
+
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_tailRec(_It _begin, _It _end, const _Prs&... preds)
+    {
+        while (_begin != _end && std::_Next_iter(_begin) != _end) {
+            _It pivot = _partition_Lomuto(_begin, _end, preds...);
+            quickSort_Lomuto_tailRec(_begin, pivot, preds...);
+            _begin = ++pivot;
         }
     }
 
-    // Partition the array {seq[first : last]} into 2 (possibly empty) subarrays
-    // | {seq[fisrtIndex : q - 1]} and {seq[q + 1 : last]}, such that each element of
-    // | {seq[first : q - 1]} <=(or >=) {seq[q]} and, in turn, {seq[q]} <=(or >=) each
-    // | element of {seq[q+1 : last]}
-    // [*] Index {q} is chosen randomly, with the method: Median-of-3 Partition
-    template<class _It, class _Pr>
-    indext _partition_Lomuto_rand(_It seq, indext first, indext last, const _Pr& comp)
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_tailRec(_It _begin, _It _end)
     {
-        // Get 3 index randomly in range of [first, last]:
-        Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
-        // Choose the median of the 3 randomly chosen elems:
-        indext mid = // index of the median
-            (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
-            : (comp(*(seq + vec[1]), *(seq + vec[0])) && comp(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                                      // otherwise               => C is median
-        std::iter_swap(seq + last, seq + mid);
-        return _partition_Lomuto(seq, first, last, comp);
+        quickSort_Lomuto_tailRec(_begin, _end, std::less<>{});
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void QuickSort_Lomuto_Rand(_It seq, indext first, indext last, const _Pr& comp = {})
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    _It _partition_Lomuto_rand(_It _begin, _It _end, const _Prs&... preds)
     {
-        if (first >= last) return;
-        // If the pivot is choosen randomly, the algorithm does not rely on the input seq
-        // As a result, the time complexity remains O(nlgn) when the seq is sorted
-        // But if all the elements are the same, the complexitiy is still O(n^2)
-        indext p = _partition_Lomuto_rand(seq, first, last, comp);
-        QuickSort_Lomuto_Rand(seq, first, p - 1, comp);
-        QuickSort_Lomuto_Rand(seq, p + 1, last, comp);
+        _It mid{ midOfRandom3(_begin, _end, std::get<0>(std::forward_as_tuple(preds...))) };
+        std::iter_swap(_begin, mid);
+        return _partition_Lomuto(_begin, _end, preds...);
     }
 
-    // Partition the array {seq[first : last]} into 3 subarrays:
-    // | elems in {seq[m : n]} all equal to the pivot;
-    // | elems in {seq[first : m-1]} all less(or larger) than the pivot;
-    // | elems in {seq[n+1 : last]} all larger(or less) than the pivot
-    // [*] Index of pivot is chosen randomly, with the method: Median-of-3 Partition
-    // [*] Repitition optimized.
-    template<class _It, class _Pr1, class _Pr2>
-    indext* _partition_Lomuto_rand_duplicated(_It seq, indext first, indext last, const _Pr1& comp, const _Pr2& equal)
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand(_It _begin, _It _end, const _Prs&... preds)
     {
-        // Get 3 index randomly in range of [first, last]:
-        Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
-        // Choose the median of the 3 randomly chosen elems:
-        indext mid = // index of the median
-            (comp(*(seq + vec[0]), *(seq + vec[1])) && comp(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
-            : (comp(*(seq + vec[1]), *(seq + vec[0])) && comp(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                                      // otherwise               => C is median
-        std::iter_swap(seq + last, seq + mid);
-        auto x = *(seq + last); // The pivot
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        _It pivot{ _partition_Lomuto_rand(_begin, _end, preds...) };
+        quickSort_Lomuto_rand(_begin, pivot, preds...);
+        quickSort_Lomuto_rand(++pivot, _end, preds...);
+    }
 
-        indext eqLeft = first - 1;
-        indext i = first - 1;
-        indext j = first;
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand(_It _begin, _It _end)
+    {
+        quickSort_Lomuto_rand(_begin, _end, std::less<>{});
+    }
 
-        for (; j <= last - 1; ++j) {
-            if (comp(*(seq + j), x)) {
-                ++i;
-                std::iter_swap(seq + i, seq + j);
-                ++eqLeft;
-                if (eqLeft != i) {
-                    std::iter_swap(seq + eqLeft, seq + i);
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    std::pair<_It, _It> _partition_Lomuto_rand_duplicated(_It _begin, _It _end, const _Prs&... preds)
+    {
+        auto comp = std::get<0>(std::forward_as_tuple(preds...));
+        auto equal_to = std::get<1>(std::forward_as_tuple(preds...));
+
+        _It mid{ midOfRandom3(_begin, _end, comp) };
+        std::iter_swap(_begin, mid);
+        auto pivot{ *_begin };
+
+        _It eqPrev{ _begin };
+        _It eqEnd{ std::_Next_iter(_begin) };
+        _It iter{ std::_Next_iter(_begin) };
+
+        for (; iter != _end; ++iter) {
+            if (equal_to(*iter, pivot)) {
+                std::iter_swap(eqEnd, iter);
+                ++eqEnd;
+            } else if (comp(*iter, pivot)) {
+                std::iter_swap(eqEnd, iter);
+                _It eqFirst{ std::_Next_iter(eqPrev) };
+                if (eqFirst != eqEnd) {
+                    std::iter_swap(eqEnd, eqFirst);
                 }
-            } else if (equal(*(seq + j), x)) {
-                ++i;
-                std::iter_swap(seq + i, seq + j);
+                ++eqPrev, ++eqEnd;
             }
         }
-        ++i;
-        std::iter_swap(seq + i, seq + last);
-        ++eqLeft;
-        return (new indext[2]{ eqLeft, i });
+
+        std::iter_swap(_begin, eqPrev);
+
+        return { ++eqPrev, eqEnd };
     }
 
-    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void quickSort_Lomuto_rand_duplicated(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {})
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated(_It _begin, _It _end, const _Prs&... preds)
     {
-        if (first >= last) return;
-        // See comments of function {Paritition_rand_duplicated_Lomuto()}
-        indext* p = _partition_Lomuto_rand_duplicated(seq, first, last, comp, equal);
-        quickSort_Lomuto_rand_duplicated(seq, first, p[0] - 1, comp, equal);
-        quickSort_Lomuto_rand_duplicated(seq, p[1] + 1, last, comp, equal);
-        delete p;
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+
+        auto [eqBegin, eqEnd] = _partition_Lomuto_rand_duplicated(_begin, _end, preds...);
+        quickSort_Lomuto_rand_duplicated(_begin, eqBegin, preds...);
+        quickSort_Lomuto_rand_duplicated(eqEnd, _end, preds...);
     }
 
-    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::equal_to<void>>
-    void QuickSort_Lomuto_Rand_Duplicated_Insertion(_It seq, indext first, indext last, const _Pr1& comp = {}, const _Pr2& equal = {}, sizet cut = 10LL)
+    template<class _It, class _Pr>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated(_It _begin, _It _end, const _Pr& comp)
     {
-        if (first >= last) return;
-        // Use insertion sort if the length is shorter than {cut}
-        if (last - first + 1LL == cut) {
-            InsertionSort(seq, first, last, comp);
+        quickSort_Lomuto_rand_duplicated(_begin, _end, comp, std::equal_to<>{});
+    }
+
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated(_It _begin, _It _end)
+    {
+        quickSort_Lomuto_rand_duplicated(_begin, _end, std::less<>{});
+    }
+
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated_insertion(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        if (std::distance(_begin, _end) + 1ULL == INSERTION_CUT) {
+            insertionSort(_begin, _end, preds...);
             return;
         }
-        indext* p = _partition_Lomuto_rand_duplicated(seq, first, last, comp, equal);
-        QuickSort_Lomuto_Rand_Duplicated_Insertion(seq, first, p[0] - 1, comp, equal, cut);
-        QuickSort_Lomuto_Rand_Duplicated_Insertion(seq, p[1] + 1, last, comp, equal, cut);
+        auto [eqBegin, eqEnd] = _partition_Lomuto_rand_duplicated(_begin, _end, preds...);
+        quickSort_Lomuto_rand_duplicated_insertion(_begin, eqBegin, preds...);
+        quickSort_Lomuto_rand_duplicated_insertion(eqEnd, _end, preds...);
     }
 
-    // Partition the array to 2 subarrays, any element in {seq[first : j]} is smaller (or larger)
-    // | than any in {seq[j+1 : last]}
-    // Hoare's scheme is more efficient than Lomuto's partition scheme because it does three times fewer
-    // | swaps on average, and it creates efficient partitions even when all values are equal
-    // [*] The pivot's final location is not necessarily at the index that was returned
-    // [*] If input array is already sorted, complexity will also degrade to O(n^2)
-    template<class _It, class _Pr1, class _Pr2>
-    indext _partition_Hoare(_It seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
+    template<class _It, class _Pr>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated_insertion(_It _begin, _It _end, const _Pr& comp)
     {
-        auto x = *(seq + first);
-        indext i = first - 1;
-        indext j = last + 1;
-        while (true) {
-            do { --j; } while (comp2(*(seq + j), x));
-            do { ++i; } while (comp1(*(seq + i), x));
-            if (i < j) {
-                std::iter_swap(seq + i, seq + j);
-            } else {
-                // Any element in {seq[first : j]} is smaller than any in {seq[j+1 : last]}.
-                return j;
-            }
-        }
+        quickSort_Lomuto_rand_duplicated_insertion(_begin, _end, comp, std::equal_to<>{});
     }
 
-    // Hoare's primitive quick sort is basically the fastest if the input scale is large, with the least use of swap.
-    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void quickSort_Hoare(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
-        if (first >= last) return;
-        indext p = _partition_Hoare(seq, first, last, comp1, comp2);
-        quickSort_Hoare(seq, first, p, comp1, comp2);
-        quickSort_Hoare(seq, p + 1, last, comp1, comp2);
-    }
-
-    // Partition the array to 2 subarrays, any element in {seq[first : j]} is smaller (or larger)
-    // | than any in {seq[j+1 : last]}
-    // Hoare's scheme is more efficient than Lomuto's partition scheme because it does three times fewer
-    // | swaps on average, and it creates efficient partitions even when all values are equal
-    // [*] The pivot's final location is not necessarily at the index that was returned
-    // [*] Pivot is chosen randomly, with the method: Median-of-3 Partition
-    template<class _It, class _Pr1, class _Pr2>
-    indext _partition_Hoare_rand(_It seq, indext first, indext last, const _Pr1& comp1, const _Pr2& comp2)
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void quickSort_Lomuto_rand_duplicated_insertion(_It _begin, _It _end)
     {
-        // Get 3 index randomly in range of [first, last]:
-        Rand_Uniform<indext> randGenerator;
-        std::vector<indext> vec = randGenerator.generateVec(3, (double)first, (double)last);
-        // Choose the median of the 3 randomly chosen elems:
-        indext mid = // index of the median
-            (comp1(*(seq + vec[0]), *(seq + vec[1])) && comp1(*(seq + vec[1]), *(seq + vec[2]))) ? vec[1]    // comp(A,B) and comp(B,C) => B is median
-            : (comp1(*(seq + vec[1]), *(seq + vec[0])) && comp1(*(seq + vec[0]), *(seq + vec[2]))) ? vec[0]  // comp(B,A) and comp(A,C) => A is median
-            : vec[2];                                                                                        // otherwise               => C is median
-        std::iter_swap(seq + first, seq + mid);
+        quickSort_Lomuto_rand_duplicated_insertion(_begin, _end, std::less<>{});
+    }
 
-        auto x = *(seq + first);
-        indext i = first - 1;
-        indext j = last + 1;
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    _It _partition_Hoare(_It _begin, _It _end, const _Prs&... preds)
+    {
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+        auto pivot{ *_begin };
+        _It i{ _begin };
+        _It j{ std::_Prev_iter(_end) };
+        int64_t size{ std::distance(_begin, _end) - 1 };
+        int64_t cnt{ 0 };
+
         while (true) {
-            do { --j; } while (comp2(*(seq + j), x));
-            do { ++i; } while (comp1(*(seq + i), x));
-            if (i < j) {
-                std::iter_swap(seq + i, seq + j);
-            } else {
-                // Any element in {seq[first : j]} is smaller than any in {seq[j+1 : last]}
-                return j;
+            while (comp(*i, pivot)) {
+                ++i, ++cnt;
             }
+            while (comp(pivot, *j)) {
+                --j, ++cnt;
+            }
+            if (cnt >= size) {
+                return ++j;
+            }
+            std::iter_swap(i, j);
+            ++i, --j, cnt += 2;
         }
+        throw("Unexpected Error: You should not be here.");
+        return _end;
     }
 
-    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_Rand(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}) {
-        if (first >= last) return;
-        indext p = _partition_Hoare_rand(seq, first, last, comp1, comp2);
-        QuickSort_Hoare_Rand(seq, first, p, comp1, comp2);
-        QuickSort_Hoare_Rand(seq, p + 1, last, comp1, comp2);
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare(_It _begin, _It _end, const _Prs&... preds) {
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        _It p = _partition_Hoare(_begin, _end, preds...);
+        quickSort_Hoare(_begin, p, preds...);
+        quickSort_Hoare(p, _end, preds...);
     }
 
-    template<class _It, class _Pr1 = std::less<void>, class _Pr2 = std::greater<void>>
-    void QuickSort_Hoare_Rand_Insertion(_It seq, indext first, indext last, const _Pr1& comp1 = {}, const _Pr2 comp2 = {}, sizet cut = 10LL) {
-        if (first >= last) return;
-        if (last - first + 1LL == cut) {
-            InsertionSort(seq, first, last, comp1);
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare(_It _begin, _It _end)
+    {
+        quickSort_Hoare(_begin, _end, std::less<>{});
+    }
+
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare_rand(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        const auto& comp = std::get<0>(std::forward_as_tuple(preds...));
+        _It mid{ midOfRandom3(_begin, _end, comp) };
+        std::iter_swap(_begin, mid);
+        _It p = _partition_Hoare(_begin, _end, preds...);
+        quickSort_Hoare_rand(_begin, p, preds...);
+        quickSort_Hoare_rand(p, _end, preds...);
+    }
+
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare_rand(_It _begin, _It _end)
+    {
+        quickSort_Hoare_rand(_begin, _end, std::less<>{});
+    }
+
+    template<class _It, class... _Prs>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare_insertion(_It _begin, _It _end, const _Prs&... preds)
+    {
+        if (_begin == _end || std::_Next_iter(_begin) == _end) return;
+        if (std::distance(_begin, _end) == INSERTION_CUT) {
+            insertionSort(_begin, _end, preds...);
             return;
         }
-        indext p = _partition_Hoare_rand(seq, first, last, comp1, comp2);
-        QuickSort_Hoare_Rand_Insertion(seq, first, p, comp1, comp2);
-        QuickSort_Hoare_Rand_Insertion(seq, p + 1, last, comp1, comp2);
+        _It pivot{ _partition_Hoare(_begin, _end, preds...) };
+        quickSort_Hoare_insertion(_begin, pivot, preds...);
+        quickSort_Hoare_insertion(pivot, _end, preds...);
+    }
+
+    template<class _It>
+        requires std::bidirectional_iterator<_It>
+    void quickSort_Hoare_insertion(_It _begin, _It _end)
+    {
+        quickSort_Hoare_insertion(_begin, _end, std::less<>{});
     }
 }

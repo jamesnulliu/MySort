@@ -5,47 +5,60 @@
 #include <limits>
 
 namespace mysort {
-    template<class _It, class _Pr>
-    void _merge(_It seq, indext subAFirst, indext subALast, indext subBLast, const auto MIN, const auto MAX, const _Pr& comp)
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void _merge_arr(_It _beginA, _It _endA, _It _endB, const _Prs&... preds)
     {
-        // {END} is set at the end of each subarray.
-        auto END = comp(MIN, MAX) ? MAX : MIN;
+        auto MIN{ std::numeric_limits<std::remove_reference_t<decltype(*_beginA)>>::lowest() };
+        auto MAX{ std::numeric_limits<std::remove_reference_t<decltype(*_beginA)>>::max() };
 
-        std::numeric_limits<decltype(*_It)>::max();
+        const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
+        auto END{ comp(MIN, MAX) ? MAX : MIN };
 
-        sizet sizeSubA = subALast - subAFirst + 2;
-        sizet sizeSubB = subBLast - subALast + 1;
-
-        auto subA = new typename std::remove_reference<decltype(*seq)>::type[sizeSubA];
-        std::copy(seq + subAFirst, seq + subALast + 1, subA);
+        // Create 2 subseqs
+        uint64_t sizeSubA{ std::distance(_beginA, _endA) + 1ULL };
+        auto subA{ new typename std::remove_reference<decltype(*_beginA)>::type[sizeSubA]{} };
+        std::copy(_beginA, _endA, subA);
         subA[sizeSubA - 1] = END;
-
-        auto subB = new typename std::remove_reference<decltype(*seq)>::type[sizeSubB];
-        std::copy(seq + subALast + 1, seq + subBLast + 1, subB);
+        uint64_t sizeSubB{ std::distance(_endA, _endB) + 1ULL };
+        auto subB{ new typename std::remove_reference<decltype(*_beginA)>::type[sizeSubB]{} };
+        std::copy(_endA, _endB, subB);
         subB[sizeSubB - 1] = END;
 
-        // Merge two subsequences to origin {seq[subAFirst : subBLast]}:
-        for (indext k = subAFirst, i = 0, j = 0; k <= subBLast; ++k) {
-            if (i >= sizeSubA || j >= sizeSubB) return;
-            // Merge:
+        // Merge two subseqs to origin seq {_beginA .. _endB}:
+        auto iter{ _beginA };
+        uint64_t i{ 0ULL }, j{ 0ULL };
+        while (iter != _endB) {
+            if (i == sizeSubA || j == sizeSubB)  break;
             if (comp(subA[i], subB[j])) {
-                *(seq + k) = subA[i]; ++i;
+                *iter = subA[i];
+                ++i;
             } else {
-                *(seq + k) = subB[j]; ++j;
+                *iter = subB[j];
+                ++j;
             }
+            ++iter;
         }
 
         delete[] subA;
         delete[] subB;
     }
 
-    template<class _It, class _Pr = std::less<void>>
-    void MergeSort(_It seq, indext first, indext last, const auto MIN, const auto MAX, const _Pr& comp = {})
+    template<class _It, class... _Prs>
+        requires std::forward_iterator<_It>
+    void mergeSort_arr(_It _begin, _It _end, const _Prs&... preds)
     {
-        if (first >= last) return;
-        indext mid = (first + last) / 2;
-        MergeSort(seq, first, mid, MAX, MIN, comp);
-        MergeSort(seq, mid + 1, last, MAX, MIN, comp);
-        _merge(seq, first, mid, last, MAX, MIN, comp);
+        if (std::_Next_iter(_begin) == _end) return;
+        _It mid = std::next(_begin, std::distance(_begin, _end) / 2);
+        mergeSort_arr(_begin, mid, preds...);
+        mergeSort_arr(mid, _end, preds...);
+        _merge_arr(_begin, mid, _end, preds...);
+    }
+
+    template<class _It>
+        requires std::forward_iterator<_It>
+    void mergeSort_arr(_It _begin, _It _end)
+    {
+        mergeSort_arr(_begin, _end, std::less<>{});
     }
 }

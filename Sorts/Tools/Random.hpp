@@ -40,12 +40,12 @@ template<class _ValTy>
 std::random_device Rand_Uniform<_ValTy>::_rd{};
 
 template<class _ValTy>
-    requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
+    requires std::integral<_ValTy> || std::_Is_any_of_v<std::remove_cv_t<_ValTy>, float, double>
 thread_local std::default_random_engine Rand_Uniform<_ValTy>::m_engine{ _rd() };
 
 template<class _ValTy>
-    requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
-static std::uniform_real_distribution<double>* Rand_Uniform<_ValTy>::m_distribution;
+    requires std::integral<_ValTy> || std::_Is_any_of_v<std::remove_cv_t<_ValTy>, float, double>
+std::uniform_real_distribution<double>* Rand_Uniform<_ValTy>::m_distribution{nullptr};
 
 template<class _ValTy>
     requires std::is_same_v<_ValTy, int> || std::is_same_v<_ValTy, long long> || std::is_same_v<_ValTy, double>
