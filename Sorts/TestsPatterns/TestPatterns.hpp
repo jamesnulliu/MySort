@@ -86,7 +86,7 @@ namespace testPatterns {
     class QuickSort_Lomuto_TailRecOpt : public BaseTestPattern
     {
     public:
-        explicit QuickSort_Lomuto_TailRecOpt() : BaseTestPattern("[Quick Sort] --Lomuto, tail_recursion_optimization") {}
+        explicit QuickSort_Lomuto_TailRecOpt() : BaseTestPattern("[Quick Sort] --Lomuto, tail_recursion_opt") {}
     private:
         virtual void sort_impl() {
             mysort::quickSort_Lomuto_tailRec(m_testData.begin(), m_testData.end());

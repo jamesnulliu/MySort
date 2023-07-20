@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <typeinfo>
 
 namespace testPatterns {
     void generateData();

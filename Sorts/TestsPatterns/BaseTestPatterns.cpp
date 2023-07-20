@@ -17,12 +17,12 @@ namespace testPatterns {
         {
         case GenMethod::NORMAL_DIST: {
             genData =
-                Rand_Normal<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, ND_MEAN, ND_SIGMA);
+                Rand_Normal<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, ND_MEAN, ND_SIGMA, "data.txt");
             break;
         }
         case GenMethod::UNIFORM_DIST: {
             genData =
-                Rand_Uniform<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, UD_MIN, UD_MAX);
+                Rand_Uniform<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, UD_MIN, UD_MAX, "data.txt");
             break;
         }
         case GenMethod::ORDERED: {
@@ -53,6 +53,9 @@ namespace testPatterns {
 
         std::cout << "===================================================" << std::endl;
         std::cout << "Data Brief Information:\n";
+        std::cout << "Container: " << typeid(CONTAINER_TYPE).name() << '\n';
+        std::cout << "Element: " << typeid(ELEMENT_TYPE).name() << '\n';
+        std::cout << "Element Number: " << NUM_OF_ELEM_TO_GENERATE << '\n';
         DistributionVisualizer<ELEMENT_TYPE> visualizer;
         visualizer(genData);
         std::cout << "===================================================" << std::endl;
@@ -66,6 +69,6 @@ namespace testPatterns {
         tcounter.endCounting();
 
         sortedData = constructContainer(genData);
-        std::cout << "[std::sort]\n" << "  Time cost: " << tcounter.msecond() << "ms" << std::endl;
+        std::cout << "[std::sort] -only_for_vector\n" << "  Time cost: " << tcounter.msecond() << "ms" << std::endl;
     }
 }
