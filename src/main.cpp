@@ -1,6 +1,7 @@
-#include "TestsPatterns/TestPatterns.hpp"
-#include "DataConfig.hpp"
 #include <forward_list>
+
+#include "MySort/TestPattern/TestPatterns.hpp"
+#include "MySort/TestPattern/DataConfig.hpp"
 
 // Change this function if your container has a specific way to construct
 // with a vector.

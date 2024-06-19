@@ -1,7 +1,9 @@
 #pragma once
-#include "PreDefined.hpp"
-
+#include <iterator>
 #include <algorithm>
+
+// [ToDo] This should be written to a config file
+#include "MySort/Core/PreDefined.hpp"
 
 namespace mysort {
     template<class _It, class... _Prs>
@@ -12,12 +14,12 @@ namespace mysort {
 
         const auto& comp{ std::get<0>(std::forward_as_tuple(preds...)) };
 
-        for (_It j = std::_Next_iter(_begin); j != _end; ++j) {
+        for (_It j = std::next(_begin); j != _end; ++j) {
             auto key{ *j };
             _It i{ _begin };
             for (; i != j && comp(*i, key); ++i) {
             }
-            if constexpr (std::_Is_ranges_bidi_iter_v<_It>) {
+            if constexpr (std::bidirectional_iterator<_It>) {
                 std::copy_backward(i, j, std::next(j, 1));
             } else {
                 for (_It k = i; k != j; ++k) {
