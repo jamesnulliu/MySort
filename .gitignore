@@ -378,10 +378,11 @@ FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
 .vscode/*
-!.vscode/settings.json
+# !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/c_cpp_properties.json
 *.code-workspace
 
 # Local History for Visual Studio Code
@@ -396,3 +397,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+**/lib
+**/build
+**/bin
