@@ -66,4 +66,51 @@ void mergeSort_arr(_It _begin, _It _end)
 {
     mergeSort_arr(_begin, _end, std::less<>{});
 }
+template <class _It, class... _Prs>
+    requires std::random_access_iterator<_It>
+void mergeSort_Natural(_It _begin, _It _end, const _Prs&... preds)
+{
+    const auto& comp = std::get<0>(std::forward_as_tuple(preds...));
+
+    if (std::distance(_begin, _end) <= 1)
+        return;
+
+    std::vector<_It> runs;
+    runs.push_back(_begin);
+
+    _It current = _begin;
+    while (current != _end) {
+        _It next = std::next(current);
+        if (next == _end || comp(*next, *current)) {
+            runs.push_back(next);
+        }
+        current = next;
+    }
+
+    while (runs.size() > 2) {
+        std::vector<_It> new_runs;
+        for (size_t i = 0; i < runs.size() - 1; i += 2) {
+            _It start = runs[i];
+            _It mid = runs[i + 1];
+            _It end = (i + 2 < runs.size()) ? runs[i + 2] : _end;
+            std::inplace_merge(start, mid, end, comp);
+            new_runs.push_back(start);
+        }
+        if (runs.size() % 2 == 1) {
+            new_runs.push_back(runs.back());
+        }
+        runs = std::move(new_runs);
+    }
+
+    if (runs.size() == 2) {
+        std::inplace_merge(runs[0], runs[1], _end, comp);
+    }
+}
+
+template <class _It>
+    requires std::random_access_iterator<_It>
+void mergeSort_Natural(_It _begin, _It _end)
+{
+    mergeSort_Natural(_begin, _end, std::less<>{});
+}
 }  // namespace mysort

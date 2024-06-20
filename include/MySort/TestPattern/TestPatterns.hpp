@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MySort/Core/BubbleSort.hpp"
+#include "MySort/Core/HeapSort.hpp"
 #include "MySort/Core/InsertionSort.hpp"
 #include "MySort/Core/MergeSort.hpp"
 #include "MySort/Core/QuickSort.hpp"
@@ -88,6 +89,20 @@ private:
     virtual void sort_impl()
     {
         mysort::mergeSort_arr(m_testData.begin(), m_testData.end());
+    }
+};
+
+class MergeSort_Natural : public BaseTestPattern
+{
+public:
+    explicit MergeSort_Natural() : BaseTestPattern("[Merge Sort] --Natural")
+    {
+    }
+
+private:
+    virtual void sort_impl()
+    {
+        mysort::mergeSort_Natural(m_testData.begin(), m_testData.end());
     }
 };
 
@@ -200,6 +215,20 @@ private:
     virtual void sort_impl()
     {
         mysort::quickSort_Hoare_insertion(m_testData.begin(), m_testData.end());
+    }
+};
+
+class HeapSort : public BaseTestPattern
+{
+public:
+    explicit HeapSort() : BaseTestPattern("[Heap Sort]")
+    {
+    }
+
+private:
+    virtual void sort_impl()
+    {
+        mysort::heapSort(m_testData.begin(), m_testData.end());
     }
 };
 }  // namespace testPatterns

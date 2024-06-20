@@ -37,6 +37,27 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
 endif()
 
+if(MSVC)
+    # MSVC on Windows
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:268435456")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    if(WIN32)
+        # LLVM on Windows
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,/STACK:268435456")
+    else()
+        # LLVM on Linux
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-zstack-size=268435456")
+    endif()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(WIN32)
+        # GNU on Windows
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,268435456")
+    else()
+        # GNU on Linux
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-zstack-size=268435456")
+    endif()
+endif()
+
 # 5.Set target include directories
 target_include_directories(
     ${TARGET_NAME} PRIVATE 

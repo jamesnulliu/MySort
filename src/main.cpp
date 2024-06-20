@@ -18,6 +18,7 @@ int main() {
     testPatterns::InsertionSort().test();
     testPatterns::SelectionSort().test();
     testPatterns::MergeSort().test();
+    testPatterns::MergeSort_Natural().test();
     testPatterns::QuickSort_Lomuto().test();
     testPatterns::QuickSort_Lomuto_TailRecOpt().test();
     testPatterns::QuickSort_Lomuto_Rand().test();
@@ -26,6 +27,6 @@ int main() {
     testPatterns::QuickSort_Hoare().test();
     testPatterns::QuickSort_Hoare_rand().test();
     testPatterns::QuickSort_Hoare_insertion().test();
-
+    testPatterns::HeapSort().test();
     ////system("pause");
 }
