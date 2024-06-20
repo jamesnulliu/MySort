@@ -16,11 +16,11 @@
     - Other Softwares: **cmake**>=3.21, **make**
     - IDE: **vscode** (optional, recommended)
 - Windows:
-    - Compiler: **MSVC**>=19
-    - Other Softwares: **cmake**>=3.21, **ninja**
+    - Compiler: **MSVC**>=19, **clang++**>=18
+    - Other Softwares: **cmake**>=3.21
     - IDE: **vscode** (optional, recommended)
 
-Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env Setup Guide for Windows](./docs/Env_Setup_Guide_for_Windows.md) for details.
+Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env Setup Guide for Windows](./docs/Env_Setup_Guide_for_Windows.md) for more details.
 
 ## 2. Implemented Algorithm
 1. bubble sort (origin / stop when no swap happens / narrow the boundary / narrow the boundary in both directions)
@@ -50,8 +50,13 @@ Provide an useful tool to record time cost of a certain block of codes.
 
 Run following command to build the required libs:
 
+#### On UNIX-based Systems:
 ```bash
-bash scripts/build-libs.sh
+$ bash scripts/build-libs.sh
+```
+#### On Windows:
+```powershell
+> powershell .\scripts\build-libs.ps1
 ```
 
 The generated libs should be in `./libs` directory.
@@ -60,8 +65,13 @@ The generated libs should be in `./libs` directory.
 
 Run following command to build MySort:
 
+#### On UNIX-based Systems:
 ```bash
-bash scripts/build.sh
+$ bash scripts/build.sh
+```
+#### On Windows:
+```powershell
+> powershell .\scripts\build.ps1
 ```
 
 You will find a binary file in `./bin` directory.

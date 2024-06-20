@@ -1,3 +1,5 @@
+$env:CC="clang"
+$env:CXX="clang++"
 $PROJ_HOME = Get-Location
 
 # Update and Init all submodules
