@@ -1,5 +1,13 @@
+# # Build with MSVC
+# $env:CC="cl"
+# $env:CXX="cl"
+# # Build with GCC
+# $env:CC="gcc"
+# $env:CXX="g++"
+# Build with Clang
 $env:CC="clang"
 $env:CXX="clang++"
+
 $BuildType = "Release"
 # If you build Yutils as a shared library, set this to ON
 $SharedYutils = "OFF"

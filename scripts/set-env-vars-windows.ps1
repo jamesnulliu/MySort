@@ -10,8 +10,6 @@ $MSVC = 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\1
 $WINKIT10_INCLUDE = 'C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0'
 $WINKIT10_LIB = 'C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0'
 $WINKIT10_BIN = 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0'
-$CMAKE_BIN = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin'
-$NINJA_BIN = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja'
 # <<<<<< [WARNING] <<<<<<
 
 # Ask the user to confirm before proceeding
@@ -52,7 +50,7 @@ if ($confirmUpdatePath -ne 'y' -and $confirmUpdatePath -ne 'Y') {
     Write-Host "Exiting the script..."
     exit
 }
-$updatedPath = "$currentPath;$MSVC\bin\Hostx64\x64;$WINKIT10_BIN\x64;$CMAKE_BIN;$NINJA_BIN;"
+$updatedPath = "$currentPath;$MSVC\bin\Hostx64\x64;$WINKIT10_BIN\x64;"
 [System.Environment]::SetEnvironmentVariable('PATH', $updatedPath, [System.EnvironmentVariableTarget]::User)
 
 Write-Host "Environment variables updated successfully. Remember to restart the terminal."
