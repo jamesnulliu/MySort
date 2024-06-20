@@ -67,7 +67,7 @@ Run following command to build MySort:
 
 #### On UNIX-based Systems:
 ```bash
-bash scripts/build.sh
+$ bash scripts/build.sh
 ```
 #### On Windows:
 ```powershell
