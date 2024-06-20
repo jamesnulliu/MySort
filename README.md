@@ -1,9 +1,24 @@
-# MySort
-Inplementation of some basic sort algorithms and some simple tests.
+<div align="center">
+
+  <h1> MySort -  Some basic sort algos and Simple Test Patterns </h1>
+  
+  ![Static Badge](https://img.shields.io/badge/PL%2F0-purple?style=plastic&link=https%3A%2F%2Fgithub.com%2Fjamesnulliu%2FPrettyLazy0%2Fblob%2Fmain%2FLICENSE) ![Static Badge](https://img.shields.io/badge/C%2B%2B-23-blue?style=plastic) ![Static Badge](https://img.shields.io/badge/g%2B%2B-13-blue?style=plastic) ![Static Badge](https://img.shields.io/badge/msvc-19-blue?style=plastic) ![Static Badge](https://img.shields.io/badge/cmake-navy?style=plastic&link=https%3A%2F%2Fgithub.com%2Fjamesnulliu%2FPrettyLazy0%2Fblob%2Fmain%2FLICENSE) ![Static Badge](https://img.shields.io/badge/make-navy?style=plastic&link=https%3A%2F%2Fgithub.com%2Fjamesnulliu%2FPrettyLazy0%2Fblob%2Fmain%2FLICENSE) ![Static Badge](https://img.shields.io/badge/ninja-navy?style=plastic&link=https%3A%2F%2Fgithub.com%2Fjamesnulliu%2FPrettyLazy0%2Fblob%2Fmain%2FLICENSE) [![license - Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-darkgreen?style=plastic)](https://github.com/jamesnulliu/PrettyLazy0/blob/main/LICENSE)
+
+</div>
+
 
 ## 1. Requirements
 
-g++11
+- Linux:
+    - Compiler: **g++**>=13
+    - Other Softwares: **cmake**>=3.21, **make**
+    - IDE: **vscode** (optional, recommended)
+- Windows:
+    - Compiler: **MSVC**>=19
+    - Other Softwares: **cmake**>=3.21, **ninja**
+    - IDE: **vscode** (optional, recommended)
+
+Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env Setup Guide for Windows](./docs/Env_Setup_Guide_for_Windows.md) for details.
 
 ## 2. Implemented Algorithm
 1. bubble sort (origin / stop when no swap happens / narrow the boundary / narrow the boundary in both directions)

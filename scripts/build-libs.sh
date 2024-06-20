@@ -6,7 +6,7 @@ PROJ_HOME=$(pwd)
 git submodule update --init --recursive
 
 # Build Yutils
-export YUTILS_HOME="$(pwd)/vendor/Yutils"
+export YUTILS_HOME="$PROJ_HOME/vendor/Yutils"
 cd $YUTILS_HOME
-bash ./scripts/build.sh Release $PROJ_HOME/libs
+bash ./scripts/build.sh Release --libo $PROJ_HOME/lib
 cd $PROJ_HOME
