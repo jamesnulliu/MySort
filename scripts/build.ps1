@@ -1,3 +1,5 @@
+$env:CC="clang"
+$env:CXX="clang++"
 $BuildType = "Release"
 # If you build Yutils as a shared library, set this to ON
 $SharedYutils = "OFF"
