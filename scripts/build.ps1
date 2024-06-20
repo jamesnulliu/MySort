@@ -13,8 +13,8 @@ Set-Location "$PROJ_HOME/build"
 $CMakeArgs = @(
     "-DCMAKE_BUILD_TYPE=$BuildType",
     "-DSHARED_YUTILS=$SharedYutils",
-    "-G=Ninja"
-)
+    "-G=MinGW Makefiles" # Use MinGW Makefiles generator
+) 
 & cmake .. $CMakeArgs
 & cmake --build . --parallel $env:NUMBER_OF_PROCESSORS
 Set-Location $PROJ_HOME
