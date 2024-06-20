@@ -16,7 +16,7 @@
     - Other Softwares: **cmake**>=3.21, **make**
     - IDE: **vscode** (optional, recommended)
 - Windows:
-    - Compiler: **clang++**>=18
+    - Compiler: **MSVC**>=19, **clang++**>=18
     - Other Softwares: **cmake**>=3.21
     - IDE: **vscode** (optional, recommended)
 
