@@ -13,35 +13,39 @@ namespace testPatterns
 class BubbleSort : public BaseTestPattern
 {
 public:
-    explicit BubbleSort() : BaseTestPattern("[Bubble Sort]")
+    explicit BubbleSort() : BaseTestPattern("Bubble Sort")
     {
     }
 
 private:
     virtual void sort_impl()
     {
-        mysort::bubbleSort(m_testData.begin(), m_testData.end());
+        if constexpr (std::forward_iterator<decltype(m_testData.begin())>) {
+            mysort::bubbleSort(m_testData.begin(), m_testData.end());
+        }
     }
 };
 
 class BubbleSort_Stop : public BaseTestPattern
 {
 public:
-    explicit BubbleSort_Stop() : BaseTestPattern("[Bubble Sort Stop in Time]")
+    explicit BubbleSort_Stop() : BaseTestPattern("Bubble Sort (Stop in Time)")
     {
     }
 
 private:
     virtual void sort_impl()
     {
-        mysort::bubbleSort_stop(m_testData.begin(), m_testData.end());
+        if constexpr (std::forward_iterator<decltype(m_testData.begin())>) {
+            mysort::bubbleSort_stop(m_testData.begin(), m_testData.end());
+        }
     }
 };
 
 class BubbleSort_NarrowBoundary : public BaseTestPattern
 {
 public:
-    explicit BubbleSort_NarrowBoundary() : BaseTestPattern("[Bubble Sort Narrow Boundary]")
+    explicit BubbleSort_NarrowBoundary() : BaseTestPattern("Bubble Sort (Narrow Boundary)")
     {
     }
 
@@ -55,7 +59,7 @@ private:
 class InsertionSort : public BaseTestPattern
 {
 public:
-    explicit InsertionSort() : BaseTestPattern("[Insertion Sort]")
+    explicit InsertionSort() : BaseTestPattern("Insertion Sort")
     {
     }
 
@@ -69,7 +73,7 @@ private:
 class SelectionSort : public BaseTestPattern
 {
 public:
-    explicit SelectionSort() : BaseTestPattern("[Selection Sort]")
+    explicit SelectionSort() : BaseTestPattern("Selection Sort")
     {
     }
     virtual void sort_impl()
@@ -81,7 +85,7 @@ public:
 class MergeSort : public BaseTestPattern
 {
 public:
-    explicit MergeSort() : BaseTestPattern("[Merge Sort]")
+    explicit MergeSort() : BaseTestPattern("Merge Sort (Array)")
     {
     }
 
@@ -95,7 +99,7 @@ private:
 class MergeSort_Natural : public BaseTestPattern
 {
 public:
-    explicit MergeSort_Natural() : BaseTestPattern("[Merge Sort] --Natural")
+    explicit MergeSort_Natural() : BaseTestPattern("Merge Sort (Natural)")
     {
     }
 
@@ -109,7 +113,7 @@ private:
 class QuickSort_Lomuto : public BaseTestPattern
 {
 public:
-    explicit QuickSort_Lomuto() : BaseTestPattern("[Quick Sort] --Lomuto")
+    explicit QuickSort_Lomuto() : BaseTestPattern("Quick Sort (Lomuto)")
     {
     }
 
@@ -124,7 +128,7 @@ class QuickSort_Lomuto_TailRecOpt : public BaseTestPattern
 {
 public:
     explicit QuickSort_Lomuto_TailRecOpt()
-        : BaseTestPattern("[Quick Sort] --Lomuto, tail_recursion_opt")
+        : BaseTestPattern("Quick Sort (Lomuto, TailRecOpt)")
     {
     }
 
@@ -138,7 +142,7 @@ private:
 class QuickSort_Lomuto_Rand : public BaseTestPattern
 {
 public:
-    explicit QuickSort_Lomuto_Rand() : BaseTestPattern("[Quick Sort] --Lomuto, rand")
+    explicit QuickSort_Lomuto_Rand() : BaseTestPattern("Quick Sort (Lomuto, Rand)")
     {
     }
     virtual void sort_impl()
@@ -151,7 +155,7 @@ class QuickSort_Lomuto_Rand_Duplicated : public BaseTestPattern
 {
 public:
     explicit QuickSort_Lomuto_Rand_Duplicated()
-        : BaseTestPattern("[Quick Sort] --Lomuto, rand, duplicated_opt")
+        : BaseTestPattern("Quick Sort (Lomuto, Rand, Duplicated)")
     {
     }
     virtual void sort_impl()
@@ -164,7 +168,7 @@ class QuickSort_Lomuto_Rand_Duplicated_Insertion : public BaseTestPattern
 {
 public:
     explicit QuickSort_Lomuto_Rand_Duplicated_Insertion()
-        : BaseTestPattern("[Quick Sort] --Lomuto, rand, duplicated_opt, insertion_sort")
+        : BaseTestPattern("Quick Sort (Lomuto, Rand, Duplicated, Insertion)")
     {
     }
 
@@ -178,7 +182,7 @@ private:
 class QuickSort_Hoare : public BaseTestPattern
 {
 public:
-    explicit QuickSort_Hoare() : BaseTestPattern("[Quick Sort] --Hoare")
+    explicit QuickSort_Hoare() : BaseTestPattern("Quick Sort (Hoare)")
     {
     }
 
@@ -192,7 +196,7 @@ private:
 class QuickSort_Hoare_rand : public BaseTestPattern
 {
 public:
-    explicit QuickSort_Hoare_rand() : BaseTestPattern("[Quick Sort] --Hoare, rand")
+    explicit QuickSort_Hoare_rand() : BaseTestPattern("Quick Sort (Hoare, Rand)")
     {
     }
 
@@ -207,7 +211,7 @@ class QuickSort_Hoare_insertion : public BaseTestPattern
 {
 public:
     explicit QuickSort_Hoare_insertion()
-        : BaseTestPattern("[Quick Sort] --Hoare, rand, insertion_sort")
+        : BaseTestPattern("Quick Sort (Hoare, Rand, Insertion)")
     {
     }
 
@@ -221,7 +225,7 @@ private:
 class HeapSort : public BaseTestPattern
 {
 public:
-    explicit HeapSort() : BaseTestPattern("[Heap Sort]")
+    explicit HeapSort() : BaseTestPattern("Heap Sort")
     {
     }
 

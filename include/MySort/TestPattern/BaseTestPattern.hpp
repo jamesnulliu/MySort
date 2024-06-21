@@ -11,7 +11,7 @@
 #include <Yutils/Random.hpp>
 #include <Yutils/TimeCounter.hpp>
 
-// [ToDo] This should be written to a config file
+#include "MySort/Core/PreDefined.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
 
 namespace testPatterns
@@ -38,42 +38,39 @@ public:
 public:
     void test()
     {
+        YCRITICAL("{}", m_methodName);
         yutils::TimeCounter tcounter = getTimeCounter();
         tcounter.init();
         tcounter.startCounting();
         sort_impl();
         tcounter.endCounting();
-        std::cout << m_methodName << '\n'
-                  << "  Time cost: " << tcounter.msecond() << "ms" << std::endl;
-        std::cout << "  Result: " << ((m_testData == *_sortedData) ? "Correct" : "Wrong")
-                  << std::endl;
+        YTRACE("| Time cost: {}ms", tcounter.msecond());
+        if (m_testData == *_sortedData){
+            YTRACE("| Result: " _YLOG_GREEN "Correct");
+        } else {
+            YTRACE("| Result: " _YLOG_RED "Wrong");
+            YTRACE("| Origin Data: {}", seqToString(*_originData, 15));
+            YTRACE("| Expect Data: {}", seqToString(*_sortedData, 15));
+            YTRACE("| Sorted Data: {}", seqToString(m_testData));
+        }
     }
 
 protected:
     virtual void sort_impl() = 0;
 
-    static void printOriginSeq()
+    static std::string seqToString(const CONTAINER_TYPE& seq, uint64_t maxLen = 20ULL)
     {
-        printSeq(*_originData);
-    }
-
-    static void printSortedSeq()
-    {
-        printSeq(*_sortedData);
-    }
-
-    static void printSeq(const CONTAINER_TYPE& seq)
-    {
+        std::string str;
         uint64_t cnt{0};
         for (auto e : seq) {
-            if (cnt == 20ULL) {
-                std::cout << "\b\b...";
+            if (cnt == maxLen) {
+                str += "...";
                 break;
             }
-            std::cout << e << ", ";
+            str += std::to_string(e) + ", ";
             ++cnt;
         }
-        std::cout << std::endl;
+        return str;
     }
 
     yutils::TimeCounter& getTimeCounter() const

@@ -70,7 +70,7 @@ void generateData()
     tcounter.endCounting();
 
     sortedData = constructContainer(genData);
-    std::cout << "[std::sort] -only_for_vector\n"
-              << "  Time cost: " << tcounter.msecond() << "ms" << std::endl;
+    YCRITICAL("std::sort (Benchmark for std::vector)");
+    YTRACE("| Time cost: {}ms", tcounter.msecond());
 }
 }  // namespace testPatterns

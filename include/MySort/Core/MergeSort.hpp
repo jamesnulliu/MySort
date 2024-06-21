@@ -3,20 +3,29 @@
 #include <limits>
 #include <vector>
 
-// [ToDo] This should be written to a config file
 #include "MySort/Core/PreDefined.hpp"
 
 namespace mysort
 {
-template <class _It, class... _Prs>
-    requires std::random_access_iterator<_It>
-void _merge_arr(_It _beginA, _It _endA, _It _endB, const _Prs&... preds)
+// =================================================================================================
+// Merge Sort (Array is used to store subseqs)
+// -------------------------------------------------------------------------------------------------
+/**
+ * @brief Merge two sorted subseqs to origin seq {_beginA .. _endB}.
+ *        The input iterators must be forward iterators.
+ * @param _beginA  Begin of the first subseq.
+ * @param _endA  End of the first subseq.
+ * @param _endB  End of the second subseq.
+ * @param _pred  Comparison predicate.
+ */
+template <class _It, class _Pr = std::less<>>
+    requires std::forward_iterator<_It>
+void _merge_arr(_It _beginA, _It _endA, _It _endB, const _Pr& _pred = {})
 {
     auto MIN = std::numeric_limits<std::iter_value_t<_It>>::lowest();
     auto MAX = std::numeric_limits<std::iter_value_t<_It>>::max();
 
-    const auto& comp = std::get<0>(std::forward_as_tuple(preds...));
-    auto END = comp(MIN, MAX) ? MAX : MIN;
+    auto END = _pred(MIN, MAX) ? MAX : MIN;
 
     // Create 2 subseqs
     uint64_t sizeSubA = std::distance(_beginA, _endA) + 1ULL;
@@ -34,7 +43,7 @@ void _merge_arr(_It _beginA, _It _endA, _It _endB, const _Prs&... preds)
     while (iter != _endB) {
         if (i == sizeSubA || j == sizeSubB)
             break;
-        if (comp(subA[i], subB[j])) {
+        if (_pred(subA[i], subB[j])) {
             *iter = subA[i];
             ++i;
         } else {
@@ -48,30 +57,58 @@ void _merge_arr(_It _beginA, _It _endA, _It _endB, const _Prs&... preds)
     delete[] subB;
 }
 
-template <class _It, class... _Prs>
-    requires std::random_access_iterator<_It>
-void mergeSort_arr(_It _begin, _It _end, const _Prs&... preds)
+/**
+ * @brief Merge Sort (Array is Used to Store Subseqs) - O(nlogn).
+ */
+template <class _It, class _Pr = std::less<>>
+void mergeSort_arr(_It, _It, const _Pr& = {})
+{
+    YWARNING("Merge Sort (Array) requires forward iterator. Skip sorting.");
+}
+
+/**
+ * @brief Merge Sort (Array is Used to Store Subseqs) - O(nlogn).
+ *        The input iterators must be forward iterators.
+ * @param _begin  Begin of the sequence.
+ * @param _end  End of the sequence.
+ * @param _pred  Comparison predicate.
+ */
+template <class _It, class _Pr = std::less<>>
+    requires std::forward_iterator<_It>
+void mergeSort_arr(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if (std::next(_begin) == _end)
         return;
     _It mid = std::next(_begin, std::distance(_begin, _end) / 2);
-    mergeSort_arr(_begin, mid, preds...);
-    mergeSort_arr(mid, _end, preds...);
-    _merge_arr(_begin, mid, _end, preds...);
+    mergeSort_arr(_begin, mid, _pred);
+    mergeSort_arr(mid, _end, _pred);
+    _merge_arr(_begin, mid, _end, _pred);
+}
+// =================================================================================================
+
+// =================================================================================================
+// Merge Sort (Natural Merge Sort)
+// -------------------------------------------------------------------------------------------------
+/**
+ * @brief Merge Sort (Natural Merge Sort) - O(nlogn).
+ */
+template <class _It, class _Pr = std::less<>>
+void mergeSort_Natural(_It, _It, const _Pr& = {})
+{
+    YWARNING("Merge Sort (Natural) requires bidirectional iterator. Skip sorting.");
 }
 
-template <class _It>
-    requires std::random_access_iterator<_It>
-void mergeSort_arr(_It _begin, _It _end)
+/**
+ * @brief  Merge Sort (Natural Merge Sort) - O(nlogn).
+ *         The input iterators must be bidirectional iterators.
+ * @param _begin  Begin of the sequence.
+ * @param _end  End of the sequence.
+ * @param _pred Comparison predicate.
+ */
+template <class _It, class _Pr = std::less<>>
+    requires std::bidirectional_iterator<_It>
+void mergeSort_Natural(_It _begin, _It _end, const _Pr& _pred = {})
 {
-    mergeSort_arr(_begin, _end, std::less<>{});
-}
-template <class _It, class... _Prs>
-    requires std::random_access_iterator<_It>
-void mergeSort_Natural(_It _begin, _It _end, const _Prs&... preds)
-{
-    const auto& comp = std::get<0>(std::forward_as_tuple(preds...));
-
     if (std::distance(_begin, _end) <= 1)
         return;
 
@@ -81,7 +118,7 @@ void mergeSort_Natural(_It _begin, _It _end, const _Prs&... preds)
     _It current = _begin;
     while (current != _end) {
         _It next = std::next(current);
-        if (next == _end || comp(*next, *current)) {
+        if (next == _end || _pred(*next, *current)) {
             runs.push_back(next);
         }
         current = next;
@@ -93,7 +130,7 @@ void mergeSort_Natural(_It _begin, _It _end, const _Prs&... preds)
             _It start = runs[i];
             _It mid = runs[i + 1];
             _It end = (i + 2 < runs.size()) ? runs[i + 2] : _end;
-            std::inplace_merge(start, mid, end, comp);
+            std::inplace_merge(start, mid, end, _pred);
             new_runs.push_back(start);
         }
         if (runs.size() % 2 == 1) {
@@ -103,14 +140,8 @@ void mergeSort_Natural(_It _begin, _It _end, const _Prs&... preds)
     }
 
     if (runs.size() == 2) {
-        std::inplace_merge(runs[0], runs[1], _end, comp);
+        std::inplace_merge(runs[0], runs[1], _end, _pred);
     }
 }
-
-template <class _It>
-    requires std::random_access_iterator<_It>
-void mergeSort_Natural(_It _begin, _It _end)
-{
-    mergeSort_Natural(_begin, _end, std::less<>{});
-}
+// =================================================================================================
 }  // namespace mysort

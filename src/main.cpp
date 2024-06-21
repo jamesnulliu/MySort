@@ -3,12 +3,6 @@
 #include "MySort/TestPattern/TestPatterns.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
 
-// Change this function if your container has a specific way to construct
-// with a vector.
-testPatterns::CONTAINER_TYPE testPatterns::constructContainer(const std::vector<testPatterns::ELEMENT_TYPE>& vec)
-{
-    return testPatterns::CONTAINER_TYPE(vec.begin(), vec.end());
-}
 
 int main() {
     testPatterns::generateData();
@@ -28,5 +22,5 @@ int main() {
     testPatterns::QuickSort_Hoare_rand().test();
     testPatterns::QuickSort_Hoare_insertion().test();
     testPatterns::HeapSort().test();
-    ////system("pause");
+    //system("pause");
 }

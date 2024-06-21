@@ -1,23 +1,28 @@
 #pragma once
-#include "PreDefined.hpp"
 #include <algorithm>
+
+#include "MySort/Core/PreDefined.hpp"
 
 namespace mysort
 {
-template <class _It, class... _Prs>
+template <class _It, class _Pr = std::less<>>
+void selectionSort(_It _begin, _It _end, const _Pr& _pred = {})
+{
+    YWARNING("Selection Sort requires forward iterator. Skip sorting.");
+}
+
+template <class _It, class _Pr = std::less<>>
     requires std::forward_iterator<_It>
-void selectionSort(_It _begin, _It _end, const _Prs&... preds)
+void selectionSort(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if (_begin == _end) {
         return;
     }
 
-    const auto& comp = std::get<0>(std::forward_as_tuple(preds...));
-
     for (_It i = _begin; std::next(i) != _end; ++i) {
         _It selected = i;
         for (_It j = std::next(i); j != _end; ++j) {
-            if (comp(*j, *selected)) {
+            if (_pred(*j, *selected)) {
                 selected = j;
             }
         }
@@ -25,12 +30,5 @@ void selectionSort(_It _begin, _It _end, const _Prs&... preds)
             std::iter_swap(selected, i);
         }
     }
-}
-
-template <class _It>
-    requires std::forward_iterator<_It>
-void selectionSort(_It _begin, _It _end)
-{
-    selectionSort(_begin, _end, std::less<>{});
 }
 }  // namespace mysort
