@@ -22,7 +22,7 @@ namespace testPatterns {
     constexpr auto MIN = std::numeric_limits<ELEMENT_TYPE>::lowest();
     constexpr auto MAX = std::numeric_limits<ELEMENT_TYPE>::max();
 
-    constexpr size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
+    constexpr size_t NUM_OF_ELEM_TO_GENERATE = 100000ULL;
     constexpr GenMethod GENERATE_METHOD = GenMethod::NORMAL_DIST;
 
     // Normal distribution params
