@@ -23,9 +23,9 @@ Set-Location "$PROJ_HOME/build"
 $CMakeArgs = @(
     "-DCMAKE_BUILD_TYPE=$BuildType",
     "-DSHARED_YUTILS=$SharedYutils",
-    "-G=MinGW Makefiles" # Use MinGW Makefiles generator
+    "-G=Ninja" # Use Ninja Config generator
 ) 
 & cmake .. $CMakeArgs
-& cmake --build . --parallel $env:NUMBER_OF_PROCESSORS
+& cmake --build . --parallel $env:NUMBER_OF_PROCESSORS --clean-first
 Set-Location $PROJ_HOME
 Write-Host "Build finished."
