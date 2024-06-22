@@ -1,18 +1,38 @@
 #!/bin/bash
 
-build_type=$1  # Release or Debug
-# If you build Yutils as a shared library, set this to ON
-shared_yutils=OFF
+BuildType="Release"  # Release or Debug
+CleanFirst=""
+# If you built Yutils as a shared library, set this to ON
+SharedYutils=OFF
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        Release|Debug)
+            BuildType=$1
+            ;;
+        -c|--clean)
+            CleanFirst="--clean-first"
+            ;;
+        *)
+            echo "Error: Invalid argument '$1'"
+            exit 1
+            ;;
+    esac
+    shift
+done
 
 PROJ_HOME=$(pwd)
 
-rm -rf $PROJ_HOME/build
-mkdir -p $PROJ_HOME/build
+if [ ! -d "$PROJ_HOME/build" ]; then
+    mkdir $PROJ_HOME/build
+fi
+
 cd $PROJ_HOME/build
 cmake ..  \
-    -DCMAKE_BUILD_TYPE=$build_type  \
-    -DSHARED_YUTILS=$shared_yutils  \
-    -G "Unix Makefiles"
-cmake --build . --parallel $(nproc)
+    -DCMAKE_BUILD_TYPE=$BuildType \
+    -DSHARED_YUTILS=$ShareYutils \
+    -G "Ninja"
+cmake --build . --parallel $(nproc) $CleanFirst
 cd $PROJ_HOME
 echo "Build finished."

@@ -10,7 +10,6 @@
 
 #include <Yutils/Random.hpp>
 #include <Yutils/TimeCounter.hpp>
-#include "MySort/CompareCounter.hpp"
 
 #include "MySort/Core/PreDefined.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
@@ -34,7 +33,7 @@ public:
         m_testData = *_originData;
     }
 
-    virtual ~BaseTestPattern() {};
+    virtual ~BaseTestPattern(){};
 
 public:
     void test()
@@ -47,14 +46,14 @@ public:
         tcounter.endCounting();
         YTRACE("| Time cost: {}ms", tcounter.msecond());
         YTRACE("| Compare Count: {}", count);
-        if (m_testData == *_sortedData){
+        if (m_testData == *_sortedData) {
             YTRACE("| Result: " _YLOG_GREEN "Correct");
         } else {
             YTRACE("| Result: " _YLOG_RED "Wrong");
-            YTRACE("| Origin Data: {}", seqToString(*_originData, 15));
-            YTRACE("| Expect Data: {}", seqToString(*_sortedData, 15));
-            YTRACE("| Sorted Data: {}", seqToString(m_testData));
         }
+        YTRACE("| Origin Data: {}", seqToString(*_originData, 8));
+        YTRACE("| Expect Data: {}", seqToString(*_sortedData, 8));
+        YTRACE("| Sorted Data: {}", seqToString(m_testData, 8));
     }
 
 protected:

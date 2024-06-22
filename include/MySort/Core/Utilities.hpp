@@ -17,4 +17,30 @@ _It midOfRandom3(_It rangeBegin, _It rangeEnd, _Pr comp)
            : (comp(*second, *first) && comp(*first, *third)) ? first
                                                              : third;
 }
+
+template<typename T, typename Compare = std::less<T>>
+class CompareCounter {
+public:
+    CompareCounter(Compare comp = Compare()) : comp(comp) {}
+
+    bool operator()(const T& a, const T& b) const {
+        ++count;
+        return comp(a, b);
+    }
+
+    std::size_t getCount() const {
+        return count;
+    }
+
+    void resetCount() {
+        count = 0;
+    }
+
+private:
+    Compare comp;
+    static uint64_t count;
+};
+
+template<typename T, typename Compare>
+uint64_t CompareCounter<T, Compare>::count = 0;
 }  // namespace mysort

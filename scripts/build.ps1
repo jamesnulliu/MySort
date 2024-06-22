@@ -1,16 +1,30 @@
-# # Build with MSVC
-# $env:CC="cl"
-# $env:CXX="cl"
-# # Build with GCC
-# $env:CC="gcc"
-# $env:CXX="g++"
-# Build with Clang
-$env:CC="clang"
-$env:CXX="clang++"
-
 $BuildType = "Release"
-# If you build Yutils as a shared library, set this to ON
+$CleanFirst = ""
+# If you built Yutils as a shared library, set this to ON
 $SharedYutils = "OFF"
+
+# Parse arguments
+for ($i = 0; $i -lt $args.Count; $i++) {
+    switch ($args[$i]) {
+        "Release" {
+            $BuildMode = "Release"
+        }
+        "Debug" {
+            $BuildMode = "Debug"
+        }
+        "-c" {
+            $CleanFirst = "--clean-first"
+        }
+        "--clean-first" {
+            $CleanFirst = "--clean-first"
+        }
+        default {
+            Write-Host "Error: Invalid argument '$($args[$i])'"
+            exit 1
+        }
+    }
+}
+
 
 $PROJ_HOME = Get-Location
 
@@ -26,6 +40,6 @@ $CMakeArgs = @(
     "-G=Ninja" # Use Ninja Config generator
 ) 
 & cmake .. $CMakeArgs
-& cmake --build . --parallel $env:NUMBER_OF_PROCESSORS --clean-first
+& cmake --build . --parallel $env:NUMBER_OF_PROCESSORS $CleanFirst
 Set-Location $PROJ_HOME
 Write-Host "Build finished."

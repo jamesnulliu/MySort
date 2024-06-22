@@ -21,7 +21,7 @@ private:
     virtual void sort_impl()
     {
         if constexpr (std::forward_iterator<decltype(m_testData.begin())>) {
-            CompareCounter<ELEMENT_TYPE> comp;
+            mysort::CompareCounter<ELEMENT_TYPE> comp;
             mysort::bubbleSort(m_testData.begin(), m_testData.end(), comp);
             count = comp.getCount();
             comp.resetCount();
@@ -40,7 +40,7 @@ private:
     virtual void sort_impl()
     {
         if constexpr (std::forward_iterator<decltype(m_testData.begin())>) {
-            CompareCounter<ELEMENT_TYPE> comp;
+            mysort::CompareCounter<ELEMENT_TYPE> comp;
             mysort::bubbleSort_stop(m_testData.begin(), m_testData.end(), comp);
             count = comp.getCount();
             comp.resetCount();
@@ -58,7 +58,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::bubbleSort_narrowBoundary(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -75,7 +75,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::insertionSort(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -90,7 +90,7 @@ public:
     }
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::selectionSort(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -107,7 +107,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::mergeSort_arr(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -124,7 +124,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::mergeSort_Natural(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -141,7 +141,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Lomuto(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -158,7 +158,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Lomuto_tailRec(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -173,7 +173,7 @@ public:
     }
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Lomuto_rand(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -189,8 +189,8 @@ public:
     }
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE, std::less<>> comp;
-        CompareCounter<ELEMENT_TYPE, std::equal_to<>> equal;
+        mysort::CompareCounter<ELEMENT_TYPE, std::less<>> comp;
+        mysort::CompareCounter<ELEMENT_TYPE, std::equal_to<>> equal;
         mysort::quickSort_Lomuto_rand_duplicated(m_testData.begin(), m_testData.end(),
                                                  std::tuple(comp, equal));
         count = comp.getCount();
@@ -211,8 +211,8 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE, std::less<>> comp;
-        CompareCounter<ELEMENT_TYPE, std::equal_to<>> equal;
+        mysort::CompareCounter<ELEMENT_TYPE, std::less<>> comp;
+        mysort::CompareCounter<ELEMENT_TYPE, std::equal_to<>> equal;
         mysort::quickSort_Lomuto_rand_duplicated_insertion(m_testData.begin(), m_testData.end(),
                                                            std::tuple(comp, equal));
         count = comp.getCount();
@@ -232,7 +232,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Hoare(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -249,7 +249,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Hoare_rand(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -266,7 +266,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::quickSort_Hoare_insertion(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
@@ -283,7 +283,7 @@ public:
 private:
     virtual void sort_impl()
     {
-        CompareCounter<ELEMENT_TYPE> comp;
+        mysort::CompareCounter<ELEMENT_TYPE> comp;
         mysort::heapSort(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();

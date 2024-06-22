@@ -27,13 +27,13 @@ void generateData()
         break;
     }
     case GenMethod::ORDERED: {
-        for (size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
             genData.push_back((ELEMENT_TYPE) ((MIN + MAX) / 2) + (ELEMENT_TYPE) i);
         }
         break;
     }
     case GenMethod::REVERSE_ORDERED: {
-        for (size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
             genData.push_back((ELEMENT_TYPE) ((MIN + MAX) / 2) - (ELEMENT_TYPE) i);
         }
         break;
@@ -43,8 +43,7 @@ void generateData()
         break;
     }
     case GenMethod::OUTER: {
-        ////throw "[ERR] Write some codes here to assign a sequence to {originData}";
-        genData = {10, 11};
+        genData = OuterGenMethod();
         break;
     }
     default:
@@ -66,7 +65,7 @@ void generateData()
     yutils::TimeCounter tcounter;
     tcounter.init();
     tcounter.startCounting();
-    std::ranges::sort(genData);
+    std::ranges::sort(genData, std::less<>{});
     tcounter.endCounting();
 
     sortedData = constructContainer(genData);
