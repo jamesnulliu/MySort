@@ -10,6 +10,7 @@
 
 #include <Yutils/Random.hpp>
 #include <Yutils/TimeCounter.hpp>
+#include "MySort/CompareCounter.hpp"
 
 #include "MySort/Core/PreDefined.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
@@ -45,6 +46,7 @@ public:
         sort_impl();
         tcounter.endCounting();
         YTRACE("| Time cost: {}ms", tcounter.msecond());
+        YTRACE("| Compare Count: {}", count);
         if (m_testData == *_sortedData){
             YTRACE("| Result: " _YLOG_GREEN "Correct");
         } else {
@@ -57,6 +59,8 @@ public:
 
 protected:
     virtual void sort_impl() = 0;
+
+    uint64_t count;
 
     static std::string seqToString(const CONTAINER_TYPE& seq, uint64_t maxLen = 20ULL)
     {
