@@ -36,9 +36,10 @@ Invoke-RestMethod -Uri https://get.scoop.sh -outfile 'install.ps1'
 # Can be ignored if you already have git installed
 scoop install main/git  
 # Build essentials
-scoop install main/llvm  # clang
+scoop install main/llvm   # clang
 scoop install main/mingw  # gcc and build tools (MinGW Makefiles)
 scoop install main/cmake  # cmake
+scoop install main/ninja  # Ninja
 ```
 
 Download and install MSVC and Microsoft C++ Build Tools from the [official website](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
