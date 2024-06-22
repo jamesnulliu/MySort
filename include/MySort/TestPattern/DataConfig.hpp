@@ -17,13 +17,13 @@ enum class GenMethod : uint8_t
     OUTER             // Outer created data
 };
 
-using ELEMENT_TYPE = double;
-using CONTAINER_TYPE = std::forward_list<ELEMENT_TYPE>;  // The container type
+using ELEMENT_TYPE = int;
+using CONTAINER_TYPE = std::list<ELEMENT_TYPE>;  // The container type
 
 constexpr auto MIN = std::numeric_limits<ELEMENT_TYPE>::lowest();
 constexpr auto MAX = std::numeric_limits<ELEMENT_TYPE>::max();
 
-constexpr size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
+constexpr std::size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
 constexpr GenMethod GENERATE_METHOD = GenMethod::NORMAL_DIST;
 
 // Normal distribution params
