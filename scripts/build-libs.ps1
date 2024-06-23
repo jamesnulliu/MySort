@@ -1,7 +1,8 @@
 $PROJ_HOME = Get-Location
 
 $YUTILS_HOME = "$PROJ_HOME\vendor\Yutils"
-if (Test-Path $YUTILS_HOME) {
+$items = Get-ChildItem -Path $YUTILS_HOME
+if ($items.Count -gt 0) {
     & git submodule update --remote --recursive
 } else {
     & git submodule update --init --recursive

@@ -4,7 +4,7 @@ PROJ_HOME=$(pwd)
 
 export YUTILS_HOME="$PROJ_HOME/vendor/Yutils"
 
-if [ -d "$PROJ_HOME/vendor/Yutils" ]; then
+if [ "$(find "$PROJ_HOME/vendor/Yutils" -mindepth 1 | wc -l)" -gt 0 ]; then
     git submodule update --remote --recursive
 else
     git submodule update --init --recursive
