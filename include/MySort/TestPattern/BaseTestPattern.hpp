@@ -33,7 +33,7 @@ public:
         m_testData = *_originData;
     }
 
-    virtual ~BaseTestPattern(){};
+    virtual ~BaseTestPattern() {};
 
 public:
     void test()
@@ -50,10 +50,10 @@ public:
             YTRACE("| Result: " _YLOG_GREEN "Correct");
         } else {
             YTRACE("| Result: " _YLOG_RED "Wrong");
+            YTRACE("| Origin Data: {}", seqToString(*_originData, 8));
+            YTRACE("| Expect Data: {}", seqToString(*_sortedData, 8));
+            YTRACE("| Sorted Data: {}", seqToString(m_testData, 8));
         }
-        YTRACE("| Origin Data: {}", seqToString(*_originData, 8));
-        YTRACE("| Expect Data: {}", seqToString(*_sortedData, 8));
-        YTRACE("| Sorted Data: {}", seqToString(m_testData, 8));
     }
 
 protected:
