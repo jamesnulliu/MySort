@@ -34,11 +34,11 @@ void generateData()
         break;
     }
     case GenMethod::SAME: {
-        genData = std::vector<ELEMENT_TYPE>(NUM_OF_ELEM_TO_GENERATE);
+        genData = genSameVec<ELEMENT_TYPE>();
         break;
     }
-    case GenMethod::OUTER: {
-        genData = outerGenMethod<ELEMENT_TYPE>();
+    case GenMethod::OTHER: {
+        genData = otherGenMethod<ELEMENT_TYPE>();
         break;
     }
     default:

@@ -52,15 +52,15 @@ void bubbleSort_stop(_It _begin, _It _end, const _Pr& _pred = {})
 }
 
 template <class _It, class _Pr = std::less<>>
-    requires std::forward_iterator<_It>
 void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
         YWARNING("Bubble Sort (Narrow Boundary) requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        // If no element to sort, return.
+        if (_begin == _end) {
             return;
-
+        }
         _It leftBoundary = _begin, rightBoundary = _end;
         while (leftBoundary != rightBoundary) {
             _It lastSwap = leftBoundary;
@@ -70,20 +70,21 @@ void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Pr& _pred = {})
                     lastSwap = i;
                 }
             }
-
-            if (lastSwap == leftBoundary)
+            // If no swap happened, it means the array is already sorted.
+            if (lastSwap == leftBoundary) {
                 break;
+            }
             rightBoundary = std::next(lastSwap);
-
             if constexpr (std::bidirectional_iterator<_It>) {
+
                 for (_It j = std::prev(rightBoundary); j != leftBoundary; --j) {
                     if (_pred(*j, *std::prev(j))) {
                         std::iter_swap(std::prev(j), j);
                         lastSwap = j;
                     }
                 }
+                leftBoundary = lastSwap;
             }
-            leftBoundary = lastSwap;
         }
     }
 }
