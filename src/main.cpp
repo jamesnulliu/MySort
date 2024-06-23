@@ -8,9 +8,9 @@ std::size_t testPatterns::NUM_OF_ELEM_TO_GENERATE = 1000;
 
 int main(int argc, char* argv[]) {
     yutils::ArgParser argParser;
-    argParser.addOption("n", "Number of elements", "int", "1000");
+    argParser.addOption("-n", "Number of elements", "int", "1000");
     argParser.parse(argc, argv);
-    testPatterns::NUM_OF_ELEM_TO_GENERATE = argParser.get<std::size_t>("n").value_or(1000);
+    testPatterns::NUM_OF_ELEM_TO_GENERATE = argParser.get<std::size_t>("-n").value_or(1000);
 
 
     testPatterns::generateData();

@@ -1,5 +1,6 @@
-#include "MySort/TestPattern/BaseTestPattern.hpp"
 #include <algorithm>
+#include "MySort/TestPattern/BaseTestPattern.hpp"
+#include "MySort/TestPattern/VecGenerator.hpp"
 
 namespace testPatterns
 {
@@ -17,25 +18,19 @@ void generateData()
 
     switch (GENERATE_METHOD) {
     case GenMethod::NORMAL_DIST: {
-        genData = yutils::RandNormal<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, ND_MEAN,
-                                                                 ND_SIGMA);
+        genData = genNormalDistVec<ELEMENT_TYPE>();
         break;
     }
     case GenMethod::UNIFORM_DIST: {
-        genData = yutils::RandUniform<ELEMENT_TYPE>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, UD_MIN,
-                                                                  UD_MAX);
+        genData = genUniformDistVec<ELEMENT_TYPE>();
         break;
     }
     case GenMethod::ORDERED: {
-        for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
-            genData.push_back((ELEMENT_TYPE) ((MIN + MAX) / 2) + (ELEMENT_TYPE) i);
-        }
+        genData = genOrderedVec<ELEMENT_TYPE>();
         break;
     }
     case GenMethod::REVERSE_ORDERED: {
-        for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
-            genData.push_back((ELEMENT_TYPE) ((MIN + MAX) / 2) - (ELEMENT_TYPE) i);
-        }
+        genData = genReverseOrderedVec<ELEMENT_TYPE>();
         break;
     }
     case GenMethod::SAME: {
@@ -43,7 +38,7 @@ void generateData()
         break;
     }
     case GenMethod::OUTER: {
-        genData = OuterGenMethod();
+        genData = outerGenMethod<ELEMENT_TYPE>();
         break;
     }
     default:

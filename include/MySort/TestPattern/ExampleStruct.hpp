@@ -9,9 +9,6 @@
  *    - operator=() (The rhs is the same type)
  *    - operator<() (The rhs is the same type)
  *    - operator==() (The rhs is the same type)
- *    - operator-() (The rhs is the same type)
- *    - operator+() (The rhs is the same type)
- *    - operator/() (The rhs is an integer)
  * 
  * 2. Overload the `to_string()` function in the `std` namespace to convert your data structure to 
  *    a string.
@@ -53,18 +50,6 @@ public:
     bool operator==(const ExampleStruct& x) const
     {
         return data == x.data;
-    }
-    ExampleStruct operator-(const ExampleStruct& x) const
-    {
-        return {data - x.data, 0};
-    }
-    ExampleStruct operator+(const ExampleStruct& x) const
-    {
-        return {data + x.data, 0};
-    }
-    ExampleStruct operator/(int x) const
-    {
-        return {data / x, 0};
     }
 };
 }  // namespace testPatterns
@@ -200,68 +185,4 @@ private:
     static thread_local std::default_random_engine m_engine;
     static std::normal_distribution<double>* m_distribution;
 };
-
-template <>
-class DistributionVisualizer<testPatterns::ExampleStruct>
-{
-public:
-    using _ValTy = testPatterns::ExampleStruct;
-    explicit DistributionVisualizer() = default;
-    DistributionVisualizer& operator=(const DistributionVisualizer&) = delete;
-
-public:
-    /**
-     * @brief Visualizes the distribution of a vector of random numbers.
-     *
-     * @param randVec The vector of random numbers.
-     * @param binNum The number of bins to divide the range of the random numbers.
-     * @param maxStarNum The maximum number of stars to print in each bin.
-     */
-    void operator()(const std::vector<_ValTy>& randVec, const std::size_t binNum = 10,
-                    const std::size_t maxStarNum = 15) const
-    {
-        if (randVec.empty())
-            return;
-        _ValTy minElem = *(std::min_element(randVec.begin(), randVec.end()));
-        _ValTy maxElem = *(std::max_element(randVec.begin(), randVec.end()));
-        double range = maxElem.data - minElem.data;
-
-        if (range == 0) {
-            std::cout << "All the elements are: " << maxElem.data << std::endl;
-            return;
-        }
-
-        double average = 0.0;
-        for (auto val : randVec) {
-            average += val.data;
-        }
-        std::vector<std::size_t> bins(binNum);
-
-        std::cout << std::format("min: {} max: {} average: {}\n", minElem.data, maxElem.data,
-                                 average);
-
-        for (const auto& val : randVec) {
-            std::size_t bin =
-                static_cast<std::size_t>(double(val.data - minElem.data) / range * binNum);
-            if (bin == bins.size()) {
-                bin -= 1;
-            }
-            ++bins[bin];
-        }
-        std::size_t maxS = *(std::max_element(bins.begin(), bins.end()));
-        double resizer = double(maxS) / maxStarNum;
-        for (auto& val : bins) {
-            val = std::size_t(ceil(val / resizer));
-        }
-        for (std::size_t i = 0; i < bins.size(); ++i) {
-            std::cout << i << ": ";
-            for (std::size_t j = 0; j < bins[i]; ++j) {
-                std::cout << "*";
-            }
-            std::cout << std::endl;
-        }
-        return;
-    }
-};
-
 }  // namespace yutils
