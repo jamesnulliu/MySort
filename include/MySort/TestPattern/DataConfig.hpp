@@ -24,9 +24,6 @@ enum class GenMethod : uint8_t
 using ELEMENT_TYPE = int;
 using CONTAINER_TYPE = std::forward_list<ELEMENT_TYPE>;
 
-constexpr auto MIN = std::numeric_limits<testPatterns::ELEMENT_TYPE>::lowest();
-constexpr auto MAX = std::numeric_limits<testPatterns::ELEMENT_TYPE>::max();
-
 // constexpr std::size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
 extern std::size_t NUM_OF_ELEM_TO_GENERATE;
 constexpr GenMethod GENERATE_METHOD = GenMethod::NORMAL_DIST;
