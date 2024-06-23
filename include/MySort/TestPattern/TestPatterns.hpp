@@ -4,6 +4,7 @@
 #include "MySort/Core/HeapSort.hpp"
 #include "MySort/Core/InsertionSort.hpp"
 #include "MySort/Core/MergeSort.hpp"
+#include "MySort/Core/PdqSort.hpp"
 #include "MySort/Core/QuickSort.hpp"
 #include "MySort/Core/SelectionSort.hpp"
 #include "MySort/TestPattern/BaseTestPattern.hpp"
@@ -287,6 +288,30 @@ private:
         mysort::heapSort(m_testData.begin(), m_testData.end(), comp);
         count = comp.getCount();
         comp.resetCount();
+    }
+};
+
+class PdqSort : public BaseTestPattern
+{
+public:
+    explicit PdqSort() : BaseTestPattern("Pattern-Defeating Quick Sort")
+    {
+    }
+
+private:
+    virtual void sort_impl()
+    {
+        if (std::is_same_v<ELEMENT_TYPE, std::string>) {
+            mysort::CompareCounter<std::string, mysort::StringCompare> comp;
+            mysort::pdqSort(m_testData.begin(), m_testData.end(), comp);
+            count = comp.getCount();
+            comp.resetCount();
+        } else {
+            mysort::CompareCounter<ELEMENT_TYPE> comp;
+            mysort::pdqSort(m_testData.begin(), m_testData.end(), comp);
+            count = comp.getCount();
+            comp.resetCount();
+        }
     }
 };
 }  // namespace testPatterns

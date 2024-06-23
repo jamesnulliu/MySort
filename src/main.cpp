@@ -30,5 +30,6 @@ int main(int argc, char* argv[]) {
     testPatterns::QuickSort_Hoare_rand().test();
     testPatterns::QuickSort_Hoare_insertion().test();
     testPatterns::HeapSort().test();
+    testPatterns::PdqSort().test();
     //system("pause");
 }
