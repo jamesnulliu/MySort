@@ -1,9 +1,9 @@
 #!/bin/bash
 
 BuildType="Release"  # Release or Debug
-CleanFirst=""
+CleanFirst="false"
 # If you built Yutils as a shared library, set this to ON
-SharedYutils=OFF
+SharedYutils="OFF"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -12,7 +12,7 @@ while [[ $# -gt 0 ]]; do
             BuildType=$1
             ;;
         -c|--clean)
-            CleanFirst="--clean-first"
+            CleanFirst="true"
             ;;
         *)
             echo "Error: Invalid argument '$1'"
@@ -33,6 +33,12 @@ cmake ..  \
     -DCMAKE_BUILD_TYPE=$BuildType \
     -DSHARED_YUTILS=$ShareYutils \
     -G "Ninja"
-cmake --build . --parallel $(nproc) $CleanFirst
+
+if [ "$CleanFirst" = "true" ]; then
+    cmake --build . --parallel $(nproc) --clean-first
+else
+    cmake --build . --parallel $(nproc)
+fi
+
 cd $PROJ_HOME
 echo "Build finished."

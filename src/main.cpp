@@ -1,10 +1,18 @@
 #include <forward_list>
+#include <Yutils/ArgParser.hpp>
 
 #include "MySort/TestPattern/TestPatterns.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
 
+std::size_t testPatterns::NUM_OF_ELEM_TO_GENERATE = 1000;
 
-int main() {
+int main(int argc, char* argv[]) {
+    yutils::ArgParser argParser;
+    argParser.addOption("n", "Number of elements", "int", "1000");
+    argParser.parse(argc, argv);
+    testPatterns::NUM_OF_ELEM_TO_GENERATE = argParser.get<std::size_t>("n").value_or(1000);
+
+
     testPatterns::generateData();
     testPatterns::BubbleSort().test();
     testPatterns::BubbleSort_Stop().test();

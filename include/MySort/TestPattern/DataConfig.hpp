@@ -27,7 +27,8 @@ using CONTAINER_TYPE = std::vector<ELEMENT_TYPE>;
 constexpr auto MIN = std::numeric_limits<ELEMENT_TYPE>::lowest();
 constexpr auto MAX = std::numeric_limits<ELEMENT_TYPE>::max();
 
-constexpr std::size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
+// constexpr std::size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
+extern std::size_t NUM_OF_ELEM_TO_GENERATE;
 constexpr GenMethod GENERATE_METHOD = GenMethod::OUTER;
 
 // Normal distribution params
