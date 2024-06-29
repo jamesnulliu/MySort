@@ -184,14 +184,75 @@ std::vector<T> genReverseOrderedVec()
 }
 // =================================================================================================
 
+// =================================================================================================
+// Example: Specialization for ExampleStruct
+// -------------------------------------------------------------------------------------------------
 template <typename T>
-    requires std::is_same_v<T, ExampleStruct>
-inline std::vector<T> outerGenMethod()
+    requires std::same_as<T, ExampleStruct>
+std::vector<T> genNormalDistVec()
 {
     std::vector<T> vec;
+    auto normalDist = yutils::RandNormal<double>{};
     for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
-        vec.push_back(T(0, i));
+        vec.emplace_back(normalDist(ND_MEAN, ND_SIGMA), i);
     }
     return vec;
 }
+
+template <typename T>
+    requires std::same_as<T, ExampleStruct>
+std::vector<T> genUniformDistVec()
+{
+    std::vector<T> vec;
+    auto uniformDist = yutils::RandUniform<double>{};
+    for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        vec.emplace_back(uniformDist(UD_MIN, UD_MAX), i);
+    }
+    return vec;
+}
+
+template <typename T>
+    requires std::same_as<T, ExampleStruct>
+std::vector<T> genOrderedVec()
+{
+    std::vector<T> vec;
+    for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        vec.emplace_back(i, i);
+    }
+    return vec;
+}
+
+template <typename T>
+    requires std::same_as<T, ExampleStruct>
+std::vector<T> genReverseOrderedVec()
+{
+    std::vector<T> vec;
+    for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        vec.emplace_back(NUM_OF_ELEM_TO_GENERATE - i, i);
+    }
+    return vec;
+}
+
+template <typename T>
+    requires std::same_as<T, ExampleStruct>
+std::vector<T> genSameVec()
+{
+    std::vector<T> vec;
+    for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        vec.emplace_back(0, i);
+    }
+    return vec;
+}
+
+template <typename T>
+    requires std::same_as<T, ExampleStruct>
+inline std::vector<T> otherGenMethod()
+{
+    std::vector<T> vec;
+    for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
+        vec.emplace_back(0, i);
+    }
+    return vec;
+}
+// =================================================================================================
 }  // namespace testPatterns

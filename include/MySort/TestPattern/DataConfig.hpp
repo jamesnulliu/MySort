@@ -21,8 +21,8 @@ enum class GenMethod : uint8_t
     OUTER             // Outer created data
 };
 
-using ELEMENT_TYPE = int;
-using CONTAINER_TYPE = std::forward_list<ELEMENT_TYPE>;
+using ELEMENT_TYPE = ExampleStruct;
+using CONTAINER_TYPE = std::vector<ELEMENT_TYPE>;
 
 // constexpr std::size_t NUM_OF_ELEM_TO_GENERATE = 40000ULL;
 extern std::size_t NUM_OF_ELEM_TO_GENERATE;

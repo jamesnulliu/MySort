@@ -48,9 +48,6 @@ public:
             YTRACE("| Result: " _YLOG_GREEN "Correct");
         } else {
             YTRACE("| Result: " _YLOG_RED "Wrong");
-            YTRACE("| Original Data: {}", seqToString(*_originData, 8));
-            YTRACE("| Expected Data: {}", seqToString(*_sortedData, 8));
-            YTRACE("|   Sorted Data: {}", seqToString(m_testData, 8));
         }
         YTRACE("| Time cost: {}ms", tcounter.msecond());
         YTRACE("| Compare Count: {}", count);
