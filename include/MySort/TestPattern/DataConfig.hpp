@@ -9,7 +9,7 @@
 // Check this example struct if you want to define your own element type.
 #include "MySort/TestPattern/ExampleStruct.hpp"
 
-namespace testPatterns
+namespace yutils::testPatterns
 {
 enum class GenMethod : uint8_t
 {
@@ -51,7 +51,7 @@ inline CONTAINER_TYPE constructContainer(const std::vector<testPatterns::ELEMENT
 {
     return testPatterns::CONTAINER_TYPE(vec.begin(), vec.end());
 }
-}  // namespace testPatterns
+}  // namespace yutils::testPatterns
 
 // =================================================================================================
 // Make std::string acceptable by the test framework
@@ -81,7 +81,7 @@ public:
     }
     static constexpr std::string max() noexcept
     {
-        return std::string(testPatterns::MAX_STR_LEN + 1, char(127));
+        return std::string(yutils::testPatterns::MAX_STR_LEN + 1, char(127));
     }
 };
 }  // namespace std

@@ -10,7 +10,7 @@ template <class _It, class _Pr = std::less<>>
 void bubbleSort(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Bubble Sort requires forward iterator. Skip sorting.");
+        globalLogger->warn("Bubble Sort requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end)
             return;
@@ -30,7 +30,7 @@ template <class _It, class _Pr = std::less<>>
 void bubbleSort_stop(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Bubble Sort (Stop) requires forward iterator. Skip sorting.");
+        globalLogger->warn("Bubble Sort (Stop) requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end)
             return;
@@ -56,7 +56,8 @@ template <class _It, class _Pr = std::less<>>
 void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Bubble Sort (Narrow Boundary) requires forward iterator. Skip sorting.");
+        globalLogger->warn(
+            "Bubble Sort (Narrow Boundary) requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end)
             return;

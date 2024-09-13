@@ -10,7 +10,7 @@
 #include "MySort/Core/StdSorts.hpp"
 #include "MySort/TestPattern/BaseTestPattern.hpp"
 
-namespace testPatterns
+namespace yutils::testPatterns
 {
 class stdStableSort : public BaseTestPattern
 {
@@ -342,4 +342,4 @@ private:
         comp.resetCount();
     }
 };
-}  // namespace testPatterns
+}  // namespace yutils::testPatterns

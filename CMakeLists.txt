@@ -10,6 +10,8 @@ project(MySort VERSION 0.1)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(STACK_SIZE 268435456)
 # MSVC
 if(MSVC AND WIN32)
@@ -47,8 +49,8 @@ endif()
 # --------------------------------------------------------------------------------------------------
 # Set the Target Name and Add Executable
 set(TARGET_NAME mysort)
-file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/TestPattern/*.cpp)
-add_executable(${TARGET_NAME} ${SOURCES} "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+add_executable(${TARGET_NAME} ${SOURCES})
 
 # Specify Build Type
 if(NOT CMAKE_BUILD_TYPE)
@@ -66,29 +68,10 @@ endif()
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Install Yutils Library ---------------------------------------------------------------------------
-# Get Yutils Library Path from Environment Variables
-set(YUTILS_HOME $ENV{YUTILS_HOME})
-if(NOT YUTILS_HOME)
-  message(FATAL_ERROR "YUTILS_HOME is not set in the environment variables.")
-endif()
-
-# Include Yutils Header Files
-target_include_directories(${TARGET_NAME} PRIVATE ${YUTILS_HOME}/include)
-
-# Find any lib file that looks like yutils
-# e.g. Yutils.lib, Yutils.a, Yutils.so, libYutils.a, libYutils.so, libYutils.dll.a, ...
-link_directories(${YUTILS_HOME}/lib)
-find_library(YUTILS_LIBRARY NAMES yutils PATHS ${YUTILS_HOME}/lib NO_DEFAULT_PATH)
-if (SHARED_YUTILS)
-    message(STATUS "[MySort] Using shared Yutils library")
-    target_compile_definitions(${TARGET_NAME} PRIVATE YUTILS_IMPORT)
-else()
-    message(STATUS "[MySort] Using static Yutils library")
-endif()
+add_subdirectory("vendor/Yutils")
 
 # Link Yutils Library
-message(STATUS "[MySort] Linking: ${YUTILS_LIBRARY}")
-target_link_libraries(${TARGET_NAME} PRIVATE ${YUTILS_LIBRARY})
+target_link_libraries(${TARGET_NAME} PRIVATE Yutils::Yutils)
 
 # Set Binary Output Path
 if(NOT DEFINED OUTPUT_DIR)

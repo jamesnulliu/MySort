@@ -12,7 +12,7 @@
  * If you want to generate a vector with a custom data structure, you should specialize those
  * functions.
  *
- * @note It is strongly recommended to specialize the functions IN THIS FILE DO NOT SPECIALIZE
+ * @note It is strongly recommended to specialize the functions IN THIS FILE. DO NOT SPECIALIZE
  *       THE FUNCTIONS IN DATA STRUCTURE HEADER FILES because cyclic dependencies may occur.
  */
 
@@ -21,21 +21,22 @@
 #include <concepts>
 #include <vector>
 
+#include "MySort/Core/PreDefined.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
 
-namespace testPatterns
+namespace yutils::testPatterns
 {
 template <typename T>
 std::vector<T> genNormalDistVec()
 {
     if constexpr (std::is_arithmetic_v<T>) {
-        return yutils::RandNormal<T>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, ND_MEAN,
-                                                              ND_SIGMA);
+        return yutils::RandNormal<T>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, ND_MEAN, ND_SIGMA);
     } else {
-        YWARNING("The given type: {} is not supported. "
-                 "Generating the same elements for Normal Vec. "
-                 "It is recommended to specialize the function for the given type.",
-                 typeid(T).name());
+        mysort::globalLogger->warn(
+            "The given type: {} is not supported. "
+            "Generating the same elements for Normal Vec. "
+            "It is recommended to specialize the function for the given type.",
+            typeid(T).name());
         return std::vector<T>(NUM_OF_ELEM_TO_GENERATE);
     }
 }
@@ -44,13 +45,13 @@ template <typename T>
 std::vector<T> genUniformDistVec()
 {
     if constexpr (std::is_arithmetic_v<T>) {
-        return yutils::RandUniform<T>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, UD_MIN,
-                                                               UD_MAX);
+        return yutils::RandUniform<T>{}.generateVec(NUM_OF_ELEM_TO_GENERATE, UD_MIN, UD_MAX);
     } else {
-        YWARNING("The given type: {} is not supported. "
-                 "Generating the same elements for Uniform Vec. "
-                 "It is recommended to specialize the function for the given type.",
-                 typeid(T).name());
+        mysort::globalLogger->warn(
+            "The given type: {} is not supported. "
+            "Generating the same elements for Uniform Vec. "
+            "It is recommended to specialize the function for the given type.",
+            typeid(T).name());
         return std::vector<T>(NUM_OF_ELEM_TO_GENERATE);
     }
 }
@@ -66,10 +67,11 @@ std::vector<T> genOrderedVec()
         }
         return vec;
     } else {
-        YWARNING("The given type: {} is not arithmetic. "
-                 "Generating the same elements for Ordered Vec. "
-                 "It is recommended to specialize the function for the given type.",
-                 typeid(T).name());
+        mysort::globalLogger->warn(
+            "The given type: {} is not arithmetic. "
+            "Generating the same elements for Ordered Vec. "
+            "It is recommended to specialize the function for the given type.",
+            typeid(T).name());
         std::vector<T> vec;
         for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
             vec.push_back(T());
@@ -89,10 +91,11 @@ std::vector<T> genReverseOrderedVec()
         }
         return vec;
     } else {
-        YWARNING("The given type: {} is not arithmetic. "
-                 "Generating the same elements for Reverse Ordered Vec. "
-                 "It is recommended to specialize the function for the given type.",
-                 typeid(T).name());
+        mysort::globalLogger->warn(
+            "The given type: {} is not arithmetic. "
+            "Generating the same elements for Reverse Ordered Vec. "
+            "It is recommended to specialize the function for the given type.",
+            typeid(T).name());
         std::vector<T> vec;
         for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
             vec.push_back(T());
@@ -129,9 +132,9 @@ std::vector<T> genNormalDistVec()
     auto uniformDist = yutils::RandUniform<int>{};
     for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
         std::string str;
-        std::size_t len = uniformDist(MIN_STR_LEN, MAX_STR_LEN);
+        std::size_t len = uniformDist.generate(MIN_STR_LEN, MAX_STR_LEN);
         for (std::size_t j = 0; j < len; ++j) {
-            char ch = '!' + ::abs(normalDist(ND_MEAN, ND_SIGMA)) % 93;
+            char ch = '!' + ::abs(normalDist.generate(ND_MEAN, ND_SIGMA)) % 93;
             str.push_back(ch);
         }
         vec.push_back(str);
@@ -147,9 +150,9 @@ std::vector<T> genUniformDistVec()
     auto uniformDist = yutils::RandUniform<int>{};
     for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
         std::string str;
-        std::size_t len = uniformDist(MIN_STR_LEN, MAX_STR_LEN);
+        std::size_t len = uniformDist.generate(MIN_STR_LEN, MAX_STR_LEN);
         for (std::size_t j = 0; j < len; ++j) {
-            char ch = '!' + uniformDist(0, 93);
+            char ch = '!' + uniformDist.generate(0, 93);
             str.push_back(ch);
         }
         vec.push_back(str);
@@ -194,7 +197,7 @@ std::vector<T> genNormalDistVec()
     std::vector<T> vec;
     auto normalDist = yutils::RandNormal<double>{};
     for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
-        vec.emplace_back(normalDist(ND_MEAN, ND_SIGMA), i);
+        vec.emplace_back(normalDist.generate(ND_MEAN, ND_SIGMA), i);
     }
     return vec;
 }
@@ -206,7 +209,7 @@ std::vector<T> genUniformDistVec()
     std::vector<T> vec;
     auto uniformDist = yutils::RandUniform<double>{};
     for (std::size_t i = 0; i < NUM_OF_ELEM_TO_GENERATE; ++i) {
-        vec.emplace_back(uniformDist(UD_MIN, UD_MAX), i);
+        vec.emplace_back(uniformDist.generate(UD_MIN, UD_MAX), i);
     }
     return vec;
 }
@@ -255,4 +258,4 @@ inline std::vector<T> otherGenMethod()
     return vec;
 }
 // =================================================================================================
-}  // namespace testPatterns
+}  // namespace yutils::testPatterns

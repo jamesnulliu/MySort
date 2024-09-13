@@ -2,13 +2,15 @@
 #include <algorithm>
 #include <iterator>
 
+#include "MySort/Core/PreDefined.hpp"
+
 namespace mysort
 {
 template <class _It, class _Pr = std::less<>>
 void heapSort(_It _begin, _It _end, const _Pr _pred = {})
 {
     if constexpr (!std::random_access_iterator<_It>) {
-        YWARNING("Heap Sort requires random access iterator. Skip sorting.");
+        globalLogger->warn("Heap Sort requires random access iterator. Skip sorting.");
     } else {
         if (_begin == _end)
             return;

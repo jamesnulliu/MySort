@@ -14,7 +14,7 @@
 #include "MySort/Core/PreDefined.hpp"
 #include "MySort/TestPattern/DataConfig.hpp"
 
-namespace testPatterns
+namespace yutils::testPatterns
 {
 
 void generateData();
@@ -33,27 +33,27 @@ public:
         m_testData = *_originData;
     }
 
-    virtual ~BaseTestPattern() {};
+    virtual ~BaseTestPattern(){};
 
 public:
     void test()
     {
-        YCRITICAL("{}", m_methodName);
+        mysort::globalLogger->critical("{}", m_methodName);
         yutils::TimeCounter tcounter = getTimeCounter();
         tcounter.init();
         tcounter.startCounting();
         sort_impl();
         tcounter.endCounting();
         if (m_testData == *_sortedData) {
-            YTRACE("| Result: " _YLOG_GREEN "Correct");
+            mysort::globalLogger->info("| Result: Correct");
         } else {
-            YTRACE("| Result: " _YLOG_RED "Wrong");
+            mysort::globalLogger->info("| Result: Wrong");
         }
-        YTRACE("| Time cost: {}ms", tcounter.msecond());
-        YTRACE("| Compare Count: {}", count);
-        YTRACE("| Original Data: {}", seqToString(*_originData, 5));
-        YTRACE("| Expected Data: {}", seqToString(*_sortedData, 5));
-        YTRACE("|   Sorted Data: {}", seqToString(m_testData, 5));
+        mysort::globalLogger->info("| Time cost: {}ms", tcounter.msecond());
+        mysort::globalLogger->info("| Compare Count: {}", count);
+        mysort::globalLogger->info("| Original Data: {}", seqToString(*_originData, 5));
+        mysort::globalLogger->info("| Expected Data: {}", seqToString(*_sortedData, 5));
+        mysort::globalLogger->info("|   Sorted Data: {}", seqToString(m_testData, 5));
     }
 
 protected:
@@ -88,4 +88,4 @@ protected:
     CONTAINER_TYPE m_testData;
 };
 
-}  // namespace testPatterns
+}  // namespace yutils::testPatterns

@@ -11,6 +11,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "MySort/Core/PreDefined.hpp"
+
 namespace mysort
 {
 namespace pdqsort_detail
@@ -553,7 +555,7 @@ template <class _It, class _Pr = std::less<>>
 void pdqSort(_It begin, _It end, const _Pr& _pred = {})
 {
     if constexpr (!std::random_access_iterator<_It>) {
-        YWARNING("Pattern-Defeating Quicksort requires random access iterator. Skip sorting.");
+        globalLogger->warn("Pattern-Defeating Quicksort requires random access iterator. Skip sorting.");
     } else {
         if (begin == end)
             return;
@@ -570,7 +572,7 @@ template <class _It, class _Pr = std::less<>>
 void pdqSort_branchless(_It begin, _It end, const _Pr& _pred = {})
 {
     if constexpr (!std::random_access_iterator<_It>) {
-        YWARNING("Pattern-Defeating Quicksort branchless requires random access iterator. Skip "
+        globalLogger->warn("Pattern-Defeating Quicksort branchless requires random access iterator. Skip "
                  "sorting.");
     } else {
         if (begin == end)

@@ -55,7 +55,7 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Lomuto(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Quick Sort (Lomuto) requires forward iterator. Skip sorting.");
+        globalLogger->warn("Quick Sort (Lomuto) requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;
@@ -78,7 +78,8 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Lomuto_tailRec(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Quick Sort (Lomuto, Tail Rec) requires forward iterator. Skip sorting.");
+        globalLogger->warn(
+            "Quick Sort (Lomuto, Tail Rec) requires forward iterator. Skip sorting.");
     } else {
         while (_begin != _end && std::next(_begin) != _end) {
             _It pivot = _partition_Lomuto(_begin, _end, _pred);
@@ -117,7 +118,7 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Lomuto_rand(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Quick Sort (Lomuto, Rand) requires forward iterator. Skip sorting.");
+        globalLogger->warn("Quick Sort (Lomuto, Rand) requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;
@@ -184,10 +185,12 @@ template <class _It, class _Pr = std::tuple<std::less<>, std::equal_to<>>>
 void quickSort_Lomuto_rand_duplicated(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Quick Sort (Lomuto, Rand, Duplicated) requires forward iterator. Skip sorting.");
+        globalLogger->warn(
+            "Quick Sort (Lomuto, Rand, Duplicated) requires forward iterator. Skip sorting.");
     } else if constexpr (!IsTuple<_Pr>) {
-        YWARNING("Quick Sort (Lomuto, Rand, Duplicated) requires a tuple of predicates. Skip "
-                 "sorting.");
+        globalLogger->warn(
+            "Quick Sort (Lomuto, Rand, Duplicated) requires a tuple of predicates. Skip "
+            "sorting.");
     } else {
 
         if (_begin == _end || std::next(_begin) == _end)
@@ -212,11 +215,13 @@ template <class _It, class _Pr = std::tuple<std::less<>, std::equal_to<>>>
 void quickSort_Lomuto_rand_duplicated_insertion(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Quick Sort (Lomuto, Rand, Duplicated, Insertion) requires forward iterator. Skip "
-                 "sorting.");
+        globalLogger->warn(
+            "Quick Sort (Lomuto, Rand, Duplicated, Insertion) requires forward iterator. Skip "
+            "sorting.");
     } else if constexpr (!IsTuple<_Pr>) {
-        YWARNING("Quick Sort (Lomuto, Rand, Duplicated, Insertion) requires a tuple of predicates. "
-                 "Skip sorting.");
+        globalLogger->warn(
+            "Quick Sort (Lomuto, Rand, Duplicated, Insertion) requires a tuple of predicates. "
+            "Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;
@@ -281,7 +286,7 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Hoare(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::bidirectional_iterator<_It>) {
-        YWARNING("Quick Sort (Hoare) requires bidirectional iterator. Skip sorting.");
+        globalLogger->warn("Quick Sort (Hoare) requires bidirectional iterator. Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;
@@ -303,7 +308,8 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Hoare_rand(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::bidirectional_iterator<_It>) {
-        YWARNING("Quick Sort (Hoare, Rand) requires bidirectional iterator. Skip sorting.");
+        globalLogger->warn(
+            "Quick Sort (Hoare, Rand) requires bidirectional iterator. Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;
@@ -318,7 +324,7 @@ void quickSort_Hoare_rand(_It _begin, _It _end, const _Pr& _pred = {})
 /**
  * @brief Quick Sort with Hoare Partition, Using Insertion Sort - O(nlogn).
  *        The input iterators must be bidirectional iterators.
- * 
+ *
  * @param _begin  Begin of the sequence.
  * @param _end  End of the sequence.
  * @param _pred  Comparison predicate.
@@ -327,7 +333,8 @@ template <class _It, class _Pr = std::less<>>
 void quickSort_Hoare_insertion(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::bidirectional_iterator<_It>) {
-        YWARNING("Quick Sort (Hoare, Insertion) requires bidirectional iterator. Skip sorting.");
+        globalLogger->warn(
+            "Quick Sort (Hoare, Insertion) requires bidirectional iterator. Skip sorting.");
     } else {
         if (_begin == _end || std::next(_begin) == _end)
             return;

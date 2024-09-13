@@ -10,7 +10,7 @@ template <class _It, class _Pr = std::less<>>
 void insertionSort(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Insertion Sort requires forward iterator. Skip sorting.");
+        globalLogger->warn("Insertion Sort requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end)
             return;

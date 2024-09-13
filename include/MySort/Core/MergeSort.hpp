@@ -70,7 +70,7 @@ template <class _It, class _Pr = std::less<>>
 void mergeSort_arr(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Merge Sort (Array) requires forward iterator. Skip sorting.");
+        globalLogger->warn("Merge Sort (Array) requires forward iterator. Skip sorting.");
     } else {
         if (std::next(_begin) == _end)
             return;
@@ -97,7 +97,7 @@ template <class _It, class _Pr = std::less<>>
 void mergeSort_Natural(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::bidirectional_iterator<_It>) {
-        YWARNING("Merge Sort (Natural) requires bidirectional iterator. Skip sorting.");
+        globalLogger->warn("Merge Sort (Natural) requires bidirectional iterator. Skip sorting.");
     } else {
         if (std::distance(_begin, _end) <= 1)
             return;

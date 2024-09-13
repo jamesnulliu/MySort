@@ -1,8 +1,10 @@
-#include <algorithm>
 #include "MySort/TestPattern/BaseTestPattern.hpp"
+#include "MySort/TestPattern/DataConfig.hpp"
 #include "MySort/TestPattern/VecGenerator.hpp"
+#include "Yutils/TypeTraits.hpp"
+#include <algorithm>
 
-namespace testPatterns
+namespace yutils::testPatterns
 {
 std::shared_ptr<CONTAINER_TYPE> BaseTestPattern::_originData;
 std::shared_ptr<CONTAINER_TYPE> BaseTestPattern::_sortedData;
@@ -48,15 +50,15 @@ void generateData()
     std::cout << "===================================================" << std::endl;
     std::cout << "Data Brief Information:\n";
     // @note The type name is not human-readable in gcc.
-    std::cout << "Container Type: " << typeid(CONTAINER_TYPE).name() << '\n';
-    std::cout << "Element Type: " << typeid(ELEMENT_TYPE).name() << '\n';
+    std::cout << "Container Type: " << yutils::type_traits::typeName<CONTAINER_TYPE>() << '\n';
+    std::cout << "Element Type: " << yutils::type_traits::typeName<ELEMENT_TYPE>() << '\n';
     std::cout << "Element Number: " << NUM_OF_ELEM_TO_GENERATE << '\n';
     yutils::DistributionVisualizer<ELEMENT_TYPE> visualizer;
-    visualizer(genData);
+    visualizer.visualize(genData);
     std::cout << "===================================================" << std::endl;
 
     originData = constructContainer(genData);
     std::ranges::stable_sort(genData, std::less<>{});
     sortedData = constructContainer(genData);
 }
-}  // namespace testPatterns
+}  // namespace yutils::testPatterns

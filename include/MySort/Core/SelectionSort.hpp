@@ -9,7 +9,7 @@ template <class _It, class _Pr = std::less<>>
 void selectionSort(_It _begin, _It _end, const _Pr& _pred = {})
 {
     if constexpr (!std::forward_iterator<_It>) {
-        YWARNING("Selection Sort requires forward iterator. Skip sorting.");
+        globalLogger->warn("Selection Sort requires forward iterator. Skip sorting.");
     } else {
         if (_begin == _end) {
             return;
