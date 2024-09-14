@@ -57,8 +57,9 @@ void quickSort_Lomuto(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::forward_iterator<_It>) {
         globalLogger->warn("Quick Sort (Lomuto) requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         _It pivot = _partition_Lomuto(_begin, _end, _pred);
         quickSort_Lomuto(_begin, pivot, _pred);
         quickSort_Lomuto(++pivot, _end, _pred);
@@ -120,8 +121,9 @@ void quickSort_Lomuto_rand(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::forward_iterator<_It>) {
         globalLogger->warn("Quick Sort (Lomuto, Rand) requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         _It pivot = _partition_Lomuto_rand(_begin, _end, _pred);
         quickSort_Lomuto_rand(_begin, pivot, _pred);
         quickSort_Lomuto_rand(++pivot, _end, _pred);
@@ -193,8 +195,9 @@ void quickSort_Lomuto_rand_duplicated(_It _begin, _It _end, const _Pr& _pred = {
             "sorting.");
     } else {
 
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
 
         auto [eqBegin, eqEnd] = _partition_Lomuto_rand_duplicated(_begin, _end, _pred);
         quickSort_Lomuto_rand_duplicated(_begin, eqBegin, _pred);
@@ -223,8 +226,9 @@ void quickSort_Lomuto_rand_duplicated_insertion(_It _begin, _It _end, const _Pr&
             "Quick Sort (Lomuto, Rand, Duplicated, Insertion) requires a tuple of predicates. "
             "Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         auto [comp, equal_to] = _pred;
         if (std::distance(_begin, _end) + 1ULL == INSERTION_CUT) {
             insertionSort(_begin, _end, comp);
@@ -288,8 +292,9 @@ void quickSort_Hoare(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::bidirectional_iterator<_It>) {
         globalLogger->warn("Quick Sort (Hoare) requires bidirectional iterator. Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         _It p = _partition_Hoare(_begin, _end, _pred);
         quickSort_Hoare(_begin, p, _pred);
         quickSort_Hoare(p, _end, _pred);
@@ -311,8 +316,9 @@ void quickSort_Hoare_rand(_It _begin, _It _end, const _Pr& _pred = {})
         globalLogger->warn(
             "Quick Sort (Hoare, Rand) requires bidirectional iterator. Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         _It mid = midOfRandom3(_begin, _end, _pred);
         std::iter_swap(_begin, mid);
         _It p = _partition_Hoare(_begin, _end, _pred);
@@ -336,8 +342,9 @@ void quickSort_Hoare_insertion(_It _begin, _It _end, const _Pr& _pred = {})
         globalLogger->warn(
             "Quick Sort (Hoare, Insertion) requires bidirectional iterator. Skip sorting.");
     } else {
-        if (_begin == _end || std::next(_begin) == _end)
+        if (_begin == _end || std::next(_begin) == _end) {
             return;
+        }
         if (std::distance(_begin, _end) == INSERTION_CUT) {
             insertionSort(_begin, _end, _pred);
             return;

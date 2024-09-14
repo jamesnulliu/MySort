@@ -12,8 +12,9 @@ void bubbleSort(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::forward_iterator<_It>) {
         globalLogger->warn("Bubble Sort requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        if (_begin == _end) {
             return;
+        }
         _It mark = std::next(_begin);
         for (_It i = std::next(_begin); i != _end; ++i) {
             for (_It j = _begin, itM = mark; itM != _end; ++j, ++itM) {
@@ -32,8 +33,9 @@ void bubbleSort_stop(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::forward_iterator<_It>) {
         globalLogger->warn("Bubble Sort (Stop) requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        if (_begin == _end) {
             return;
+        }
 
         _It mark = std::next(_begin);
         for (_It i = std::next(_begin); i != _end; ++i) {
@@ -44,8 +46,9 @@ void bubbleSort_stop(_It _begin, _It _end, const _Pr& _pred = {})
                     swapped = true;
                 }
             }
-            if (swapped == false)
+            if (swapped == false) {
                 return;
+            }
             ++mark;
         }
     }
@@ -59,8 +62,9 @@ void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Pr& _pred = {})
         globalLogger->warn(
             "Bubble Sort (Narrow Boundary) requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        if (_begin == _end) {
             return;
+        }
 
         _It leftBoundary = _begin, rightBoundary = _end;
         while (leftBoundary != rightBoundary) {
@@ -72,8 +76,9 @@ void bubbleSort_narrowBoundary(_It _begin, _It _end, const _Pr& _pred = {})
                 }
             }
 
-            if (lastSwap == leftBoundary)
+            if (lastSwap == leftBoundary) {
                 break;
+            }
             rightBoundary = std::next(lastSwap);
 
             if constexpr (std::bidirectional_iterator<_It>) {

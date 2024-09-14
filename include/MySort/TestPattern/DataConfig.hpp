@@ -49,7 +49,7 @@ constexpr std::size_t MAX_STR_LEN = 16;  // Maximum string length
  */
 inline CONTAINER_TYPE constructContainer(const std::vector<testPatterns::ELEMENT_TYPE>& vec)
 {
-    return testPatterns::CONTAINER_TYPE(vec.begin(), vec.end());
+    return {vec.begin(), vec.end()};
 }
 }  // namespace yutils::testPatterns
 
@@ -81,7 +81,7 @@ public:
     }
     static constexpr std::string max() noexcept
     {
-        return std::string(yutils::testPatterns::MAX_STR_LEN + 1, char(127));
+        return {yutils::testPatterns::MAX_STR_LEN + 1, char(127)};
     }
 };
 }  // namespace std

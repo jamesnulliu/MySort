@@ -12,8 +12,9 @@ void insertionSort(_It _begin, _It _end, const _Pr& _pred = {})
     if constexpr (!std::forward_iterator<_It>) {
         globalLogger->warn("Insertion Sort requires forward iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        if (_begin == _end) {
             return;
+        }
 
         for (_It j = std::next(_begin); j != _end; ++j) {
             auto key{*j};

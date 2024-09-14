@@ -37,15 +37,15 @@ enum
 };
 
 template <class T>
-struct is_default_compare : std::false_type
+struct IsDefaultCompare : std::false_type
 {
 };
 template <class T>
-struct is_default_compare<std::less<T>> : std::true_type
+struct IsDefaultCompare<std::less<T>> : std::true_type
 {
 };
 template <class T>
-struct is_default_compare<std::greater<T>> : std::true_type
+struct IsDefaultCompare<std::greater<T>> : std::true_type
 {
 };
 
@@ -54,8 +54,9 @@ template <class T>
 inline int log2(T n)
 {
     int log = 0;
-    while (n >>= 1)
+    while (n >>= 1) {
         ++log;
+    }
     return log;
 }
 
@@ -64,8 +65,9 @@ template <class _It, class _Pr = std::less<>>
 inline void insertion_sort(_It begin, _It end, const _Pr& _pred = {})
 {
     typedef typename std::iterator_traits<_It>::value_type T;
-    if (begin == end)
+    if (begin == end) {
         return;
+    }
 
     for (_It cur = begin + 1; cur != end; ++cur) {
         _It sift = cur;
@@ -90,8 +92,9 @@ template <class _It, class _Pr = std::less<>>
 inline void unguarded_insertion_sort(_It begin, _It end, const _Pr& _pred = {})
 {
     typedef typename std::iterator_traits<_It>::value_type T;
-    if (begin == end)
+    if (begin == end) {
         return;
+    }
 
     for (_It cur = begin + 1; cur != end; ++cur) {
         _It sift = cur;
@@ -117,8 +120,9 @@ template <class _It, class _Pr = std::less<>>
 inline bool partial_insertion_sort(_It begin, _It end, const _Pr& _pred = {})
 {
     typedef typename std::iterator_traits<_It>::value_type T;
-    if (begin == end)
+    if (begin == end) {
         return true;
+    }
 
     std::size_t limit = 0;
     for (_It cur = begin + 1; cur != end; ++cur) {
@@ -137,8 +141,9 @@ inline bool partial_insertion_sort(_It begin, _It end, const _Pr& _pred = {})
             limit += cur - sift;
         }
 
-        if (limit > partial_insertion_sort_limit)
+        if (limit > partial_insertion_sort_limit) {
             return false;
+        }
     }
 
     return true;
@@ -147,8 +152,9 @@ inline bool partial_insertion_sort(_It begin, _It end, const _Pr& _pred = {})
 template <class _It, class _Pr = std::less<>>
 inline void sort2(_It a, _It b, const _Pr& _pred = {})
 {
-    if (_pred(*b, *a))
+    if (_pred(*b, *a)) {
         std::iter_swap(a, b);
+    }
 }
 
 // Sorts the elements *a, *b and *c using comparison function comp.
@@ -215,17 +221,21 @@ inline std::pair<_It, bool> partition_right_branchless(_It begin, _It end, const
 
     // Find the first element greater than or equal than the pivot (the median of 3 guarantees
     // this exists).
-    while (_pred(*++first, pivot))
+    while (_pred(*++first, pivot)) {
         ;
+    }
 
     // Find the first element strictly smaller than the pivot. We have to guard this search if
     // there was no element before *first.
-    if (first - 1 == begin)
-        while (first < last && !_pred(*--last, pivot))
+    if (first - 1 == begin) {
+        while (first < last && !_pred(*--last, pivot)) {
             ;
-    else
-        while (!_pred(*--last, pivot))
+        }
+    } else {
+        while (!_pred(*--last, pivot)) {
             ;
+        }
+    }
 
     // If the first pair of elements that should be swapped to partition are the same element,
     // the passed in sequence already was correctly partitioned.
@@ -339,14 +349,16 @@ inline std::pair<_It, bool> partition_right_branchless(_It begin, _It end, const
         // We have now fully identified [first, last)'s proper position. Swap the last elements.
         if (num_l) {
             offsets_l += start_l;
-            while (num_l--)
+            while (num_l--) {
                 std::iter_swap(offsets_l_base + offsets_l[num_l], --last);
+            }
             first = last;
         }
         if (num_r) {
             offsets_r += start_r;
-            while (num_r--)
+            while (num_r--) {
                 std::iter_swap(offsets_r_base - offsets_r[num_r], first), ++first;
+            }
             last = first;
         }
     }
@@ -377,17 +389,21 @@ inline std::pair<_It, bool> partition_right(_It begin, _It end, const _Pr& _pred
 
     // Find the first element greater than or equal than the pivot (the median of 3 guarantees
     // this exists).
-    while (_pred(*++first, pivot))
+    while (_pred(*++first, pivot)) {
         ;
+    }
 
     // Find the first element strictly smaller than the pivot. We have to guard this search if
     // there was no element before *first.
-    if (first - 1 == begin)
-        while (first < last && !_pred(*--last, pivot))
+    if (first - 1 == begin) {
+        while (first < last && !_pred(*--last, pivot)) {
             ;
-    else
-        while (!_pred(*--last, pivot))
+        }
+    } else {
+        while (!_pred(*--last, pivot)) {
             ;
+        }
+    }
 
     // If the first pair of elements that should be swapped to partition are the same element,
     // the passed in sequence already was correctly partitioned.
@@ -398,10 +414,12 @@ inline std::pair<_It, bool> partition_right(_It begin, _It end, const _Pr& _pred
     // above.
     while (first < last) {
         std::iter_swap(first, last);
-        while (_pred(*++first, pivot))
+        while (_pred(*++first, pivot)) {
             ;
-        while (!_pred(*--last, pivot))
+        }
+        while (!_pred(*--last, pivot)) {
             ;
+        }
     }
 
     // Put the pivot in the right place.
@@ -425,22 +443,28 @@ inline _It partition_left(_It begin, _It end, const _Pr& _pred = {})
     _It first = begin;
     _It last = end;
 
-    while (_pred(pivot, *--last))
+    while (_pred(pivot, *--last)) {
         ;
+    }
 
-    if (last + 1 == end)
-        while (first < last && !_pred(pivot, *++first))
+    if (last + 1 == end) {
+        while (first < last && !_pred(pivot, *++first)) {
             ;
-    else
-        while (!_pred(pivot, *++first))
+        }
+    } else {
+        while (!_pred(pivot, *++first)) {
             ;
+        }
+    }
 
     while (first < last) {
         std::iter_swap(first, last);
-        while (_pred(pivot, *--last))
+        while (_pred(pivot, *--last)) {
             ;
-        while (!_pred(pivot, *++first))
+        }
+        while (!_pred(pivot, *++first)) {
             ;
+        }
     }
 
     _It pivot_pos = last;
@@ -462,10 +486,11 @@ inline void pdqSort_loop(_It begin, _It end, const _Pr& _pred = {}, int bad_allo
 
         // Insertion sort is faster for small arrays.
         if (size < insertion_sort_threshold) {
-            if (leftmost)
+            if (leftmost) {
                 insertion_sort(begin, end, _pred);
-            else
+            } else {
                 unguarded_insertion_sort(begin, end, _pred);
+            }
             return;
         }
 
@@ -477,8 +502,9 @@ inline void pdqSort_loop(_It begin, _It end, const _Pr& _pred = {}, int bad_allo
             sort3(begin + 2, begin + (s2 + 1), end - 3, _pred);
             sort3(begin + (s2 - 1), begin + s2, begin + (s2 + 1), _pred);
             std::iter_swap(begin, begin + s2);
-        } else
+        } else {
             sort3(begin + s2, begin, end - 1, _pred);
+        }
 
         // If *(begin - 1) is the end of the right partition of a previous partition operation
         // there is no element in [begin, end) that is smaller than *(begin - 1). Then if our
@@ -538,8 +564,9 @@ inline void pdqSort_loop(_It begin, _It end, const _Pr& _pred = {}, int bad_allo
             // If we were decently balanced and we tried to sort an already partitioned
             // sequence try to use insertion sort.
             if (already_partitioned && partial_insertion_sort(begin, pivot_pos, _pred) &&
-                partial_insertion_sort(pivot_pos + 1, end, _pred))
+                partial_insertion_sort(pivot_pos + 1, end, _pred)) {
                 return;
+            }
         }
 
         // Sort the left partition first using recursion and do tail recursion elimination for
@@ -555,14 +582,16 @@ template <class _It, class _Pr = std::less<>>
 void pdqSort(_It begin, _It end, const _Pr& _pred = {})
 {
     if constexpr (!std::random_access_iterator<_It>) {
-        globalLogger->warn("Pattern-Defeating Quicksort requires random access iterator. Skip sorting.");
+        globalLogger->warn(
+            "Pattern-Defeating Quicksort requires random access iterator. Skip sorting.");
     } else {
-        if (begin == end)
+        if (begin == end) {
             return;
+        }
 
         pdqsort_detail::pdqSort_loop<
             _It, _Pr,
-            pdqsort_detail::is_default_compare<typename std::decay<_Pr>::type>::value &&
+            pdqsort_detail::IsDefaultCompare<typename std::decay<_Pr>::type>::value &&
                 std::is_arithmetic<typename std::iterator_traits<_It>::value_type>::value>(
             begin, end, _pred, pdqsort_detail::log2(end - begin));
     }
@@ -572,11 +601,13 @@ template <class _It, class _Pr = std::less<>>
 void pdqSort_branchless(_It begin, _It end, const _Pr& _pred = {})
 {
     if constexpr (!std::random_access_iterator<_It>) {
-        globalLogger->warn("Pattern-Defeating Quicksort branchless requires random access iterator. Skip "
-                 "sorting.");
+        globalLogger->warn(
+            "Pattern-Defeating Quicksort branchless requires random access iterator. Skip "
+            "sorting.");
     } else {
-        if (begin == end)
+        if (begin == end) {
             return;
+        }
         pdqsort_detail::pdqSort_loop<_It, _Pr, true>(begin, end, _pred,
                                                      pdqsort_detail::log2(end - begin));
     }

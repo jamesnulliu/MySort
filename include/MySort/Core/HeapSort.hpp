@@ -12,8 +12,9 @@ void heapSort(_It _begin, _It _end, const _Pr _pred = {})
     if constexpr (!std::random_access_iterator<_It>) {
         globalLogger->warn("Heap Sort requires random access iterator. Skip sorting.");
     } else {
-        if (_begin == _end)
+        if (_begin == _end) {
             return;
+        }
 
         std::make_heap(_begin, _end, _pred);
         for (_It i = std::prev(_end); i != _begin; --i) {

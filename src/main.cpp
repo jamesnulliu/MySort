@@ -7,7 +7,7 @@ std::size_t yutils::testPatterns::NUM_OF_ELEM_TO_GENERATE = 1000;
 
 int main(int argc, char* argv[])
 {
-    mysort::globalLogger->set_pattern("[%n] [%^%l%$] %v");
+    mysort::globalLogger->set_pattern("[%n] [%^%8l%$] %v");
 
     yutils::ArgParser argParser(argv[0]);
     argParser.addOption("-n", "Number of elements", "int", "1000");
